@@ -1,0 +1,63 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+AMapWX	libs/amap-wx.js	/^function AMapWX (a) {$/;"	c
+AMapWX.getWxLocation	libs/amap-wx.js	/^AMapWX.prototype.getWxLocation = function (a, b) {$/;"	m
+AddWX	utils/index.js	/^function AddWX(wx) {$/;"	f
+MakePhone	utils/index.js	/^function MakePhone(phone) {\/\/打电话$/;"	f
+Vue	main.js	/^Vue.prototype.$store = store;$/;"	c
+Vue.$store	main.js	/^Vue.prototype.$store = store;$/;"	m
+atob	utils/index.js	/^  var atob = function(a){$/;"	f
+b64chars	utils/index.js	/^  var b64chars$/;"	v
+b64tab	utils/index.js	/^  var b64tab = function(bin) {$/;"	f
+btoa	utils/index.js	/^  var btoa = function(b) {$/;"	f
+btou	utils/index.js	/^  var btou = function(b) {$/;"	f
+buffer	utils/index.js	/^  var buffer;$/;"	v
+cb_btou	utils/index.js	/^  var cb_btou = function(cccc) {$/;"	f
+cb_decode	utils/index.js	/^  var cb_decode = function(cccc) {$/;"	f
+cb_encode	utils/index.js	/^  var cb_encode = function(ccc) {$/;"	f
+cb_utob	utils/index.js	/^  var cb_utob = function(c) {$/;"	f
+checkPhone	utils/index.js	/^function checkPhone(str) {$/;"	f
+chooseImage	utils/index.js	/^function chooseImage(methods, count) {$/;"	f
+data.data	utils/request.js	/^      data: base64.encode(JSON.stringify(request)),$/;"	p
+day1	utils/index.js	/^  var day1=newDate.getDate();$/;"	v
+decode	utils/index.js	/^  var decode = function(a){$/;"	f
+encode	utils/index.js	/^  var encode = function(u, urisafe) {$/;"	f
+encodeURI	utils/index.js	/^  var encodeURI = function(u) { return encode(u, true) };$/;"	f
+formatNumber	utils/index.js	/^function formatNumber(n) {$/;"	f
+fromCharCode	utils/index.js	/^  var fromCharCode = String.fromCharCode;$/;"	v
+function.	libs/amap-wx.js	/^}, AMapWX.prototype.getWeather = function (a) {$/;"	c
+function.function..function.	libs/amap-wx.js	/^}, AMapWX.prototype.getPoiAround = function (a) {$/;"	c
+function.function..function.d.e	libs/amap-wx.js	/^  function e (e) {$/;"	f
+function.function..function.function.function..function..	libs/amap-wx.js	/^}, AMapWX.prototype.getStaticmap = function (a) {$/;"	c
+function.function..function.function.function..function..function.d	libs/amap-wx.js	/^  function d (d) {$/;"	f
+function.function..function.function.function..function..function.d.e.key	libs/amap-wx.js	/^      key: b.key,$/;"	p
+getDrivingRoute	libs/amap-wx.js	/^}, AMapWX.prototype.getDrivingRoute = function (a) {$/;"	m
+getRegeo	libs/amap-wx.js	/^}, AMapWX.prototype.getRegeo = function (a) {$/;"	m
+getRidingRoute	libs/amap-wx.js	/^}, AMapWX.prototype.getRidingRoute = function (a) {$/;"	m
+getTransitRoute	libs/amap-wx.js	/^}, AMapWX.prototype.getTransitRoute = function (a) {$/;"	m
+getWalkingRoute	libs/amap-wx.js	/^}, AMapWX.prototype.getWalkingRoute = function (a) {$/;"	m
+getcookie	utils/request.js	/^function getcookie() {$/;"	f
+getdate	utils/index.js	/^function getdate(time , k) { \/\/ 获取当前日期$/;"	f
+gettoken	utils/request.js	/^function gettoken() {$/;"	f
+heartCheck.reset	utils/websocket.js	/^  reset: function() {$/;"	m
+heartCheck.serverTimeoutObj	utils/websocket.js	/^  serverTimeoutObj: null,$/;"	p
+heartCheck.start	utils/websocket.js	/^  start: function(sendcode) {$/;"	m
+heartCheck.timeout	utils/websocket.js	/^  timeout: 4000, \/\/9分钟发一次心跳$/;"	p
+heartCheck.timeoutObj	utils/websocket.js	/^  timeoutObj: null,$/;"	p
+imgBackUrl	utils/request.js	/^var imgBackUrl = ossUrl;$/;"	v
+import.use.currentCompany	store/index.js	/^  currentCompany: {},$/;"	p
+json.code	utils/websocket.js	/^    code:101,$/;"	p
+json.token	utils/websocket.js	/^    token:wx.getStorageSync('token'),$/;"	p
+judgeSign	utils/index.js	/^function judgeSign(num) {$/;"	f
+let.M+	mixins/index.js	/^        "M+" : date.getMonth()+1,                 \/\/月份$/;"	p
+month1	utils/index.js	/^  var month1=newDate.getMonth()+1;$/;"	v
+permission.data	libs/profession.js	/^    "data": [{$/;"	p
+re_utob	utils/index.js	/^  var re_utob = \/[\\uD800-\\uDBFF][\\uDC00-\\uDFFFF]|[^\\x00-\\x7F]\/g;$/;"	v
+throttle	utils/index.js	/^function throttle(fn,gapTime = 1500) {$/;"	f
+utob	utils/index.js	/^  var utob = function(u) {$/;"	f
+version	utils/index.js	/^  var version = "2.1.9";$/;"	v
+year1	utils/index.js	/^  var year1=newDate.getFullYear();$/;"	v

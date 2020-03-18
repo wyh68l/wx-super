@@ -1,0 +1,287 @@
+{
+  "pages": [
+    {
+      "path": "pages/index/main",
+      "style": {
+        "navigationBarTitleText": "名片",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/dynamicDetail/webView",
+      "style": {
+        "navigationBarTitleText": "文章详情"
+      }
+    },
+    {
+      "path": "pages/cardCase/main",
+      "style": {
+        "navigationBarTitleText": "名片夹",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/IM/main",
+      "style": {
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/wxLogin/main",
+      "style": {
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/cardCode/main",
+      "style": {}
+    },
+    {
+      "path": "pages/orderLists/main",
+      "style": {
+        "navigationBarTitleText": "订单",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/WebSite/main",
+      "style": {
+        "navigationBarTitleText": "官网",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/Dynamic/main",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/Product/main",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/searchGoods/main",
+      "style": {
+        "navigationBarTitleText": "搜索商品"
+      }
+    },
+    {
+      "path": "pages/address/main",
+      "style": {
+        "navigationBarTitleText": "我的地址",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/usercenter/main",
+      "style": {
+        "enablePullDownRefresh": true,
+        "navigationBarTitleText": "个人中心"
+      }
+    },
+    {
+      "path": "pages/collect/main",
+      "style": {
+        "navigationBarTitleText": "收藏"
+      }
+    },
+    {
+      "path": "pages/shopCart/main",
+      "style": {
+        "navigationBarTitleText": "购物车",
+        "enablePullDownRefresh": true,
+        "navigationBarTextStyle": "#ffffff",
+        "navigationBarBackgroundColor": "#00a0e9"
+      }
+    },
+    {
+      "path": "pages/orderConfirm/main",
+      "style": {
+        "navigationBarTitleText": "订单确认"
+      }
+    },
+    {
+      "path": "pages/addressEdit/main",
+      "style": {}
+    },
+    {
+      "path": "pages/prodDetail/main",
+      "style": {
+        "navigationBarTitleText": "商品详情",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/editCard/main",
+      "style": {
+        "navigationBarTitleText": "编辑名片"
+      }
+    },
+    {
+      "path": "pages/counter/main",
+      "style": {}
+    },
+    {
+      "path": "pages/dynamicDetail/main",
+      "style": {
+        "navigationBarTitleText": "文章详情"
+      }
+    },
+    {
+      "path": "pages/orderDetail/main",
+      "style": {
+        "navigationBarTitleText": "订单详情"
+      }
+    },
+    {
+      "path": "pages/joinUsDetail/main",
+      "style": {
+        "navigationBarTitleText": "招聘详情",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/searchChooseItem/main",
+      "style": {
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/companyAddr/main",
+      "style": {
+        "navigationBarTitleText": "选择地址"
+      }
+    },
+    {
+      "path": "pages/showBill/main",
+      "style": {
+        "navigationBarTitleText": "名片海报"
+      }
+    },
+    {
+      "path": "pages/distribution/main",
+      "style": {
+        "navigationBarTitleText": "分销中心",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/msg/main",
+      "style": {
+        "navigationBarTitleText": "消息",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/appointment/main",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "预约"
+      }
+    },
+    {
+      "path": "pages/videoExhibition/main",
+      "style": {
+        "navigationBarTitleText": "视频展示"
+      }
+    },
+    {
+      "path": "pages/editVideoExhibition/main",
+      "style": {}
+    },
+    {
+      "path": "pages/assembleDetail/main",
+      "style": {
+        "enablePullDownRefresh": true,
+        "navigationBarTitleText": "拼团详情"
+      }
+    }
+  ],
+  "subPackages": [
+    {
+      "root": "pages/appointmentPack/",
+      "pages": [
+        {
+          "path": "productDetail/main",
+          "style": {
+            "navigationBarTitleText": "预约产品",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
+          "path": "addAppointment/main",
+          "style": {
+            "navigationBarTitleText": "预约信息"
+          }
+        },
+        {
+          "path": "searchGoods/main",
+          "style": {
+            "navigationBarTitleText": "搜索预约"
+          }
+        },
+        {
+          "path": "orderList/main",
+          "style": {
+            "navigationBarTitleText": "我的预约"
+          }
+        },
+        {
+          "path": "orderDetail/main",
+          "style": {
+            "navigationBarTitleText": "我的预约"
+          }
+        }
+      ]
+    }
+  ],
+  "tabBar": {
+    "color": "#A8A8A8",
+    "backgroundColor": "#ffffff",
+    "selectedColor": "#00a0e9",
+    "borderStyle": "white",
+    "list": [
+      {
+        "text": "名片",
+        "pagePath": "pages/index/main",
+        "iconPath": "static/tabs/card.png",
+        "selectedIconPath": "static/tabs/card_select.png"
+      },
+      {
+        "text": "预约",
+        "pagePath": "pages/appointment/main",
+        "iconPath": "static/tabs/appointment.png",
+        "selectedIconPath": "static/tabs/appointment_select.png"
+      },
+      {
+        "text": "商城",
+        "pagePath": "pages/Product/main",
+        "iconPath": "static/tabs/prod_gray.png",
+        "selectedIconPath": "static/tabs/prod_select.png"
+      },
+      {
+        "text": "动态",
+        "pagePath": "pages/Dynamic/main",
+        "iconPath": "static/tabs/browser.png",
+        "navigationStyle": "custom",
+        "selectedIconPath": "static/tabs/browser_select.png"
+      },
+      {
+        "text": "官网",
+        "pagePath": "pages/WebSite/main",
+        "iconPath": "static/tabs/computer.png",
+        "selectedIconPath": "static/tabs/computer_select.png"
+      }
+    ],
+    "position": "bottom"
+  },
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "超级销售猿",
+    "navigationBarBackgroundColor": "#fff",
+    "backgroundColor": "#ffffff"
+  }
+}

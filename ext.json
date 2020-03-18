@@ -1,0 +1,14 @@
+{
+  "extEnable": true,
+  "extAppid": "wx00501d59083631cf",
+  "ext": {
+    "jumpAppId": "wx9370d80525ae404a",
+    "jumpName": "",
+    "companyKey": "one-stand",
+    "uploadUrl": "https://api.hanjumbo.com",
+    "baseUrl": "https://api.hanjumbo.com",
+    "wssUrl": "wss://socket.hanjumbo.com/ws",
+    "headImg": "http://wx.qlogo.cn/mmhead/Q3auHgzwzM451qcIXDcqmTPRgINVTkPtvoLT8AeRsKaVxEKmonb2CQ/0",
+    "ossUrl": "https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/"
+  }
+}
