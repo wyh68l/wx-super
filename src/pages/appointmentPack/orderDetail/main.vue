@@ -114,6 +114,7 @@ import ProductCard from "@/components/ProductCard";
 import DialogBox from "@/components/dialogBox"; // 对话框
 import WXAJAX from "@/utils/request";
 import util from "@/utils/index";
+import store from "../../../store/index";
 
 export default {
   name: "",
@@ -286,7 +287,7 @@ export default {
     toAppointMentPage() {
       wx.setStorageSync("COMPANYID", this.orderInfo.companyId);
       wx.setStorageSync("CARDID", this.orderInfo.companyUserId);
-
+        store.commit('setCurrentTab',4);
       wx.switchTab({ url: `/pages/appointment/main` });
     }
   }

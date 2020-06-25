@@ -1,6 +1,6 @@
 <template>
   <div class="pb50">
-    <SelfSwiper :imgUrls="images" :self_class="'h375'"></SelfSwiper>
+    <SelfSwiper :imgUrls="images" :self_class="'h375'" @swipclick="preview"></SelfSwiper>
 
     <div class="bgfff pl16 pr15 pb15 mb10">
       <p class="lh45">
@@ -37,7 +37,8 @@
       <div class="bgfff" v-html="goodsMsg.goodsDetails"></div>
     </div>
 
-    <p class="lh43 textc fs12 ca8">- 汉全科技集团出品 -</p>
+    <!--<p class="lh43 textc fs12 ca8">- 汉全科技集团出品 -</p>-->
+      <Bottom></Bottom>
 
     <!--bottom-->
 
@@ -103,10 +104,12 @@ import WXAJAX from "@/utils/request";
 import util from "@/utils/index";
 import { mapGetters } from "vuex";
 import { addShareRecord } from "@/utils/behavior";
+import Bottom from "@/components/Bottom";
+import store from "../../../store/index";
 
 export default {
   name: "",
-  components: { SelfSwiper, RightFloat },
+  components: { SelfSwiper, RightFloat,Bottom},
   data() {
     return {
       canbuy: true, //是否可以支付
@@ -242,10 +245,15 @@ export default {
           v.images = [];
         });
     },
+      //预览图片
+      preview(idx) {
+          this.previewImages(this.images, this.images[idx]);
+      },
     clickRightRowEvent() {
       this.isShow = !this.isShow;
     },
     toProductList() {
+        store.commit('setCurrentTab',4);
       wx.switchTab({ url: "/pages/appointment/main" });
     },
     toAppointment() {

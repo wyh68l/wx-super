@@ -2,7 +2,7 @@
   <div class="bgfff pl15 pt15 pr15 card3">
     <div class="posre h213 overhidden">
       <img
-        src="https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/user/20200402card06.png"
+        src="https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/user/20200402card05.png"
         alt
         class="posab left0 top0 card3_bg w100p h100p"
       />
@@ -16,38 +16,22 @@
                 class="posab card2_user h60"
         />
 
-      <div class="cacrd3_left">
-        <p class="fs10 pb7">
-              <img
-                      class="i-phone"
-                      src="https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/user/phone.png"
-                      alt
-              />
-            {{card_msg.tel || '电话'}}</p>
-        <p class="fs10">
-              <img
-                      class="i-phone"
-                      src="https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/user/email.png"
-                      alt
-              />
-            {{card_msg.email || '邮箱'}}</p><br>
-          <p class="fs10">
-                <img
-                      class="i-phone"
-                      src="https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/user/address.png"
-                      alt
-              />
-              {{companyAddress}}</p>
-      </div>
-
       <div class="card3_right">
-        <p style="font-size:38upx;" class="fs20 fbold">{{card_msg.username || '姓名'}}</p>
+        <p
+          style="font-size:38upx;"
+          class="fs20 fbold"
+        >{{card_msg.username || '姓名'}}</p>
         <p class="fs10">{{card_msg.post || '职位'}}</p>
       </div>
 
-      <div class="align-cen fs10 ce8 card_company disflex">
+      <div class="align-cen fs10 ce8 card_company">
         <span class="pr14">{{card_msg.company || '公司名称'}}</span>
-        <div class="card_line_2"></div>
+        <!--<div class="card_line_2"></div>-->
+          <div class="cacrd3_left">
+              <p class="fs10 pb9">电话：{{card_msg.tel || '电话'}}</p>
+              <p class="fs10 pb9">邮箱：{{card_msg.email || '邮箱'}}</p>
+              <p class="fs10 ">地址：{{companyAddress}}</p>
+          </div>
       </div>
 
         <div class="disflex align-cen">
@@ -96,22 +80,16 @@ export default {
 <style>
 .pb6 {
   margin-top: 26upx;
-  padding-bottom: 7upx;
+  padding-bottom: 18upx;
 }
 .card_line_2 {
   position: relative;
 }
 .card3 .card2_user{
     z-index: 2;
-    top: 220rpx;
+    top: 270rpx;
     left: 450rpx;
     border-radius: 50%;
-}
-.i-phone {
-    transform: translate(0,5rpx);
-    width: 24upx;
-    height: 24upx;
-    margin-right: 15rpx;
 }
 .company{
     height: 80rpx;
@@ -121,56 +99,48 @@ export default {
     left: -200rpx;
 }
 
-.card_line_2::before,
-.card_line_2::after {
-  position: absolute;
-  width: 6upx;
-  height: 16upx;
-  background: #fff;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  content: "";
-}
+/*.card_line_2::before,*/
+/*.card_line_2::after {*/
+  /*position: absolute;*/
+  /*width: 6upx;*/
+  /*height: 16upx;*/
+  /*background: #fff;*/
+  /*top: 0;*/
+  /*bottom: 0;*/
+  /*margin: auto;*/
+  /*content: "";*/
+/*}*/
 
-.card_line_2::before {
-  right: 0;
-}
+/*.card_line_2::before {*/
+  /*right: 0;*/
+/*}*/
 
-.card_line_2::after {
-  right: 10upx;
-}
+/*.card_line_2::after {*/
+  /*right: 10upx;*/
+/*}*/
 
 .card_company {
-  position: absolute;
-    right: 320rpx;
-    bottom: 130rpx;
+    position: absolute;
+    right: 290rpx;
+    bottom: 40rpx;
     font-size: 38rpx;
     width: 320rpx;
-    color: #00A0E9;
+    color: #333333;
+    font-weight: bold;
 }
 
 .card3 .cacrd3_left {
-    position: absolute;
-    left: 50upx;
-    top: 319rpx;
-    display: flex;
-    flex-wrap: wrap;
-    width: 340rpx;
-}
-.card3 .cacrd3_left p:nth-child(2){
-    margin-left: 35upx;
-}
 
+}
 .card3 .card3_right {
   position: absolute;
-  left: 96rpx;
-  top: 130rpx;
+  left: 279upx;
+  top: 125rpx;
     display: flex;
     color: black;
 }
 .card3 .card3_right p:nth-child(2){
-    margin-top: 26upx;
+    margin-top: 19upx;
     margin-left: 20upx;
 }
 </style>

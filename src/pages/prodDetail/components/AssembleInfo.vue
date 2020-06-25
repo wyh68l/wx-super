@@ -286,6 +286,7 @@ export default {
     //提交订单，
     submitOrder(payload) {
       this.currentSelectPro = JSON.parse(JSON.stringify(this.currentSelectPro));
+        this.currentSelectPro.killId = this.proData.killId;
       this.currentSelectPro.goodsName = this.proData.goodsName;
       this.currentSelectPro.num = payload.sum;
       this.currentSelectPro.photoUrl = this.goodsImg;

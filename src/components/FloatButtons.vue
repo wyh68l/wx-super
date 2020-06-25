@@ -8,7 +8,10 @@
       </div>
       </div>-->
       <div class="custom-cycle talk" @click="talk" v-if="isShowTalk">
-        <img
+          <span class="disblock posab top0 right5 bradius50p tips fs12"
+                v-if="currentNum > 0"
+          >{{currentNum}}</span>
+          <img
           class="small-cycle"
           :src="avatarUrl||'https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/user/user_default_avatar_square.png'"
           alt
@@ -24,8 +27,12 @@
 import HandleLogin from "@/utils/handleLogin";
 import LoginIntercept from "@/components/LoginIntercept";
 import PhoneNumberIntercept from "@/components/PhoneNumberIntercept";
+import { mapGetters } from "vuex";
 
 export default {
+    computed: {
+         ...mapGetters(["currentNum"]),
+    },
   props: {
     avatarUrl: {
       type: String
@@ -41,9 +48,13 @@ export default {
   },
   data() {
     return {
-      isShowLogin: false
+      isShowLogin: false,
+        companyId:wx.getStorageSync('COMPANYID') || 0
     };
   },
+    mounted(){
+        //console.log(this.msgCont);
+    },
   methods: {
     // 其他监听事件登录 成功回调
     loginInterceptSuccess() {
@@ -75,11 +86,17 @@ export default {
 };
 </script>
 <style scoped>
+    .tips{
+        padding: 2rpx 10rpx;
+        background-color: red;
+        color: #fff;
+    }
+
 .float-buttons {
   position: fixed;
   width: 116upx;
   /* height: 100%; */
-  bottom: 100upx;
+  bottom: 250upx;
   right: 30upx;
   flex-direction: column;
   z-index: 1000;

@@ -123,7 +123,7 @@
             class="w40 h40"
           />
           <p class="pt5">我的消息</p>
-          <!-- <div class="count" v-if="msgUnRead > 0">{{msgUnRead}}</div> -->
+           <div class="count" v-if="countNum > 0">{{countNum}}</div>
         </div>
         <div class="textc" @click="showDevelopingTips">
           <img
@@ -159,7 +159,15 @@
           />
           <p class="pt5">我的收藏</p>
         </div>
-        <div class="textc"></div>
+          <div class="textc" @click="clearCache">
+              <img
+                      src="https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/crm/delete2.png"
+                      alt
+                      class="w30 h30 tip"
+              />
+              <p class="pt5">删除缓存</p>
+          </div>
+        <!--<div class="textc"></div>-->
       </div>
     </div>
 
@@ -198,7 +206,7 @@ export default {
   onShow() {
     this.setUserInfo();
     this.init();
-    // this.getMsgList();
+    this.getMsgList();
   },
 
   async onPullDownRefresh() {
@@ -218,17 +226,18 @@ export default {
     },
     getMsgList() {
       this.msgUnRead = 0;
-      if (
-        this.msgList &&
-        this.msgList.imList.length &&
-        this.msgList.imList.length > 0
-      ) {
-        for (let item of this.msgList.imList) {
-          if (item.newestMessage.type == 0) {
-            this.msgUnRead += 1;
-          }
-        }
-      }
+
+      // if (
+      //   this.msgList &&
+      //   this.msgList.imList.length &&
+      //   this.msgList.imList.length > 0
+      // ) {
+      //   for (let item of this.msgList.imList) {
+      //     if (item.newestMessage.type == 0) {
+      //       this.msgUnRead += 1;
+      //     }
+      //   }
+      // }
     },
     getOrderListCount: function() {
       // var v = this;
@@ -282,6 +291,12 @@ export default {
         wx.navigateTo({ url: "/pages/" + url + "/main" });
       }
     },
+      clearCache(){
+          wx.showToast({
+              title: '清除缓存成功！'
+          })
+          wx.clearStorageSync();
+      },
     toCrmAPP() {
       toMiniProgram(`/pages/index/main`);
     },
@@ -301,7 +316,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["countNum"]),
+    ...mapGetters(["countNum",]),
     msgList() {
       console.debug("store接收的消息+++", store.state.msgList.msglist);
       return store.state.msgList.msglist;
@@ -323,6 +338,11 @@ export default {
 }
 .textc {
   position: relative;
+}
+.tip{
+    padding: 10rpx;
+    border: 2rpx dotted #6BB6F5;
+    border-radius: 8upx;
 }
 .textc > .count {
   position: absolute;

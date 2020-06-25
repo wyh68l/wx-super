@@ -21,7 +21,7 @@ export default {
         },
         save(){
             this.$emit('save')
-        }
+        },
     }
 }
 </script>

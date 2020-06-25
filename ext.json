@@ -9,6 +9,7 @@
     "baseUrl": "https://api.hanjumbo.com",
     "wssUrl": "wss://socket.hanjumbo.com/ws",
     "headImg": "http://wx.qlogo.cn/mmhead/Q3auHgzwzM451qcIXDcqmTPRgINVTkPtvoLT8AeRsKaVxEKmonb2CQ/0",
-    "ossUrl": "https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/"
+    "ossUrl": "https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/",
+    "smartMainId":1
   }
 }

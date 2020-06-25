@@ -159,7 +159,18 @@
                 let assembleId = '';
                 if (list[0].shopcartModelList && list[0].shopcartModelList.length>0) {
                     assembleId = list[0].shopcartModelList[0].assembleId;
+                    list[0].shopcartModelList[0].forwardId = wx.getStorageSync('forwardId')?wx.getStorageSync('forwardId'):'';
+                    //console.log(list[0].shopcartModelList[0].killEndTime);
+                    if(list[0].shopcartModelList[0].killEndTime < 0){
+                        wx.showToast({
+                            title: '活动已过期！',
+                            icon: 'none'
+                        });
+                        return;
+                    }
                 }
+                //list[0].shopcartModelList[0].killId = 97;//添加秒杀id
+                console.log(list[0].shopcartModelList);
                 WXAJAX.ToPay({
                     orderinfoRequestList: list[0].shopcartModelList,
                     addressId:v.default_addr.addressId,
@@ -173,9 +184,8 @@
                         wx.navigateTo({url:'../orderLists/main?status=1'})
                     })
                 }).catch(()=>{
-                  this.isLoading = false;
+                    this.isLoading = false;
                 });
-
             }
         }
     }

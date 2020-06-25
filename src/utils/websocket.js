@@ -39,6 +39,7 @@ export function connect(sendcode) {
    * 接受消息
    */
   wx.onSocketMessage(function (res) {
+      //console.log(res);
     jsMessage(res,sendcode);
   });
   //error事件
@@ -64,7 +65,7 @@ export function connect(sendcode) {
  * @param res
  */
 export  function jsMessage(res,sendcode) {
-  // console.log("接受消息 --- ",res);
+   //console.log("接受消息 --- ",res);
   var messageData=JSON.parse(res.data);
   if(!messageData.success){
     console.log('操作失败')
@@ -100,9 +101,11 @@ export  function jsMessage(res,sendcode) {
   }
 
   if(messageData.code===1009) {
+      //console.log(messageData,'data');
     let num = messageData.unreadMessageEntity ? (messageData.unreadMessageEntity.size || 0) : 0;
     if (messageData.targetId) {
-      store.dispatch('setCurrentNum', num);
+      // store.dispatch('0', num);
+        store.dispatch('setCurrentNum', num);
     }else{
       store.dispatch('setCountNum', num);
     }
@@ -128,11 +131,11 @@ export  function jsMessage(res,sendcode) {
   if(messageData.code === 1401){
       console.log("websocket 返回 1401 没登录 --------")
       // clearLoginInfo();
-      wx.showToast({
-          title: '请登录',
-          duration: 1000,
-          icon: 'none'
-      });
+      // wx.showToast({
+      //     title: '请登录',
+      //     duration: 1000,
+      //     icon: 'none'
+      // });
   }
 }
 

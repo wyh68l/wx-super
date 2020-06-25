@@ -73,27 +73,54 @@
         </div>
       </div>
       <div
-        class="bgf5f6 pl10 pr10 fbold pt9 pb9 cdeepblue fs16"
-        v-if="dynamic_item.doThumbsNum > 0 || (dynamic_item.commentModelList && dynamic_item.commentModelList.length)"
+        class="bgf5f6 pl10 pr10 fbold pt9 pb9 cdeepblue fs13"
+        v-if="dynamic_item.logo.length > 0 || (dynamic_item.commentModelList && dynamic_item.commentModelList.length)"
       >
-        <div class="dynamic_likes" v-if="dynamic_item.doThumbsNum > 0">
+        <div class="dynamic_likes" v-if="dynamic_item.logo.length > 0">
           <img
             src="https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/user/zan.png"
             alt
             class="w20 h20 mr8 posre top4"
           />
-          <span
-            v-for="(like_item,k2) in dynamic_item.doThumbsName"
-            :key="k2"
-            class="like_name posre"
-          >{{like_item}}</span>
+          <!--<span-->
+            <!--v-for="(like_item,k2) in dynamic_item.doThumbsName"-->
+            <!--:key="k2"-->
+            <!--class="like_name posre"-->
+          <!--&gt;{{like_item}}</span>-->
+            <img v-for="(item,index) in dynamic_item.logo" :src="item" :key="index" alt="" class="w20 h20 bradius50p mr3" v-if="item">
         </div>
-        <p
-          v-for="(comment_item,k3) in dynamic_item.commentModelList"
-          :key="k3"
-          class="cdeepblue pt9"
-          @click.stop="addComment(index1, comment_item)"
-        >
+
+          <div v-if="dynamic_item.commentModelList">
+              <div v-if="dynamic_item.commentNum >= 10 && isShow">
+                  <p
+                          v-for="(comment_item,k3) in dynamicItemMin"
+                          :key="k3"
+                          class="cdeepblue pt5"
+                          @click.stop="addComment(index1, comment_item)"
+                  >
+
+                <span v-if="comment_item.text">
+            <span class="fbold">
+              {{comment_item.userName}}
+              <template v-if="comment_item.replyName">
+                <span class="c38">回复</span>
+                {{comment_item.replyName}}
+              </template>
+            </span>
+            <span class="c38">：{{comment_item.text || ''}}</span>
+          </span>
+                  </p>
+                  <!--<p class="pt9" @click="getMore"-->
+                  <!--v-if="dynamic_item.commentModelList && (dynamic_item.commentNum>dynamic_item.commentModelList.length)"-->
+                  <!--&gt;点击查看{{dynamic_item.commentNum}}条评论</p>-->
+              </div>
+              <div v-else>
+                  <p
+                          v-for="(comment_item,k3) in dynamic_item.commentModelList"
+                          :key="k3"
+                          class="cdeepblue pt5"
+                          @click.stop="addComment(index1, comment_item)"
+                  >
           <span v-if="comment_item.text">
             <span class="fbold">
               {{comment_item.userName}}
@@ -104,12 +131,15 @@
             </span>
             <span class="c38">：{{comment_item.text || ''}}</span>
           </span>
-        </p>
+                  </p>
+              </div>
+          </div>
+
         <p
-          class="textc pt10"
+          class="pt10"
           @click="getMore"
-          v-if="dynamic_item.commentModelList && (dynamic_item.commentNum>dynamic_item.commentModelList.length)"
-        >查看更多</p>
+          v-if="dynamic_item.commentModelList && (dynamic_item.commentNum>=10 && isShow)"
+        >点击查看{{dynamic_item.commentNum}}条评论</p>
       </div>
     </div>
   </div>
@@ -121,9 +151,21 @@ import { mapGetters } from "vuex";
 export default {
   name: "dynamicItem",
   props: ["dynamic_item", "index1"],
+    data(){
+      return {
+          arrayLength:3,
+          isShow:true,
+          dynamicItemMin:[]
+      }
+    },
   computed: {
     ...mapGetters(["currentCompany"])
   },
+    created(){
+      if(this.dynamic_item.commentModelList && this.dynamic_item.commentModelList.length !== 0){
+          this.dynamicItemMin = this.dynamic_item.commentModelList.slice(0,this.arrayLength);
+      }
+    },
   methods: {
     dynamic_detail(id) {
       this.$emit("dynamic_detail", id);
@@ -139,19 +181,20 @@ export default {
       this.$emit("zan", index1, isThumbs, this.dynamic_item.dynamicId);
     },
     getMore() {
-      wx.showLoading();
-      WXAJAX.POST(
-        {
-          pageSize: 10,
-          pageNum: parseInt(this.dynamic_item.commentModelList.length / 10) + 1,
-          dynamicId: this.dynamic_item.dynamicId
-        },
-        "",
-        "/personal/selectComment"
-      ).then(res => {
-        wx.hideLoading();
-        this.$emit("getMoreComment", res, this.index1);
-      });
+        this.isShow = false;
+      // wx.showLoading();
+      // WXAJAX.POST(
+      //   {
+      //     pageSize: 10,
+      //     pageNum: parseInt(this.dynamic_item.commentModelList.length / 10) + 1,
+      //     dynamicId: this.dynamic_item.dynamicId
+      //   },
+      //   "",
+      //   "/personal/selectComment"
+      // ).then(res => {
+      //   wx.hideLoading();
+      //   this.$emit("getMoreComment", res, this.index1);
+      // });
     },
     previewImage(src) {
       let source = this.checkImgNameIsNumber(src) ? src : src + ".primary.png";

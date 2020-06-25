@@ -11,7 +11,7 @@
 
         <div v-if="menu_id == 3">
             <div class="bgfff pt15 pl15 pr15 pb15 disflex jsbet"
-                 v-for="(v,k) in prods" :key="k" @click="toIndex('index', card_msg.companyId, card_msg.cardId)">
+                 v-for="(v,k) in prods" :key="k" @click="toIndex(v.itemId)">
                 <img :src="v.photos" mode="aspectFill" alt class="w50 h50 bradius5 mr10" />
 
                 <div class="flex1 disflex jsbet align-cen">
@@ -74,16 +74,22 @@
         </div>
 
         <!--bottom-->
-        <div class="textc lh42 fs12 ca8 bgf5f6" v-if="nodata">- 汉全科技集团出品 -</div>
+        <!--<div class="textc lh42 fs12 ca8 bgf5f6" v-if="nodata">- 汉全科技集团出品 -</div>-->
+        <Bottom v-if="nodata"></Bottom>
+
     </div>
 </template>
 
 <script>
     import WXAJAX from "../../utils/request";
+    import Bottom from "@/components/Bottom";
+    import store from "../../store/index";
 
     export default {
         name: "",
-        components: {},
+        components: {
+            Bottom
+        },
         data() {
             return {
                 menu_id: 1, //1产品，2文章，3企业
@@ -201,14 +207,16 @@
                         wx.hideLoading();
                     });
             },
-            toIndex(url, companyid, cardid) {
+            toIndex(itemId) {
                 //进入对方名片
-                console.log(companyid,cardid);
-                wx.setStorageSync("COMPANYID", companyid); /*id*/
-                wx.setStorageSync("CARDID", cardid); /*id*/
-                wx.switchTab({
-                    url: "../" + url + "/main?cardId=" + cardid + "&companyId+" + companyid
-                });
+                WXAJAX.POST({companyId:itemId}, "", '/businessCard/selectComIdByCardId').then(res=>{
+                    wx.setStorageSync("COMPANYID", itemId); /*id*/
+                    wx.setStorageSync("CARDID", res.cardId); /*id*/
+                    store.commit('setCurrentTab',5);
+                    wx.switchTab({
+                        url: "../index/main?cardId=" + res.cardId + "&companyId+" + itemId
+                    });
+                })
             },
             toDetail(el) {
                 //查看文章详情

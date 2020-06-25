@@ -12,9 +12,12 @@
       </div>
       <div class="footer">
         <div class="price-type disflex jsbet align-cen">
-          <div class="price">
+          <div class="price" v-if="!title2">
             ￥<span>{{price}}</span>
           </div>
+            <div class="fs15 corange" v-else>
+                <span>{{title2}}</span>
+            </div>
           <div class="tag disflex jscen align-cen" v-if="typeName">
             {{typeName}}
           </div>
@@ -36,6 +39,10 @@
         type: String,
         default: '',
       },
+    title2: {
+        type: String,
+        default: '',
+    },
       desc: {
         type: String,
         default: '',

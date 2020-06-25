@@ -24,6 +24,7 @@
         <Card_3 v-if="card_type == 3" :isPrev="true" :card_msg="card_msg"></Card_3>
         <Card_4 v-if="card_type == 4" :card_msg="card_msg"></Card_4>
         <Card_5 v-if="card_type == 5" :card_msg="card_msg"></Card_5>
+          <Card_6 v-if="card_type == 6" :card_msg="card_msg"></Card_6>
       </div>
       <!-- <div class="pt15 card-case" @click.native="toCardCase">
                     <div class="disflex h30 bra_left_15 bg_line_blue cfff fs12 pl15 pr10 lh30 align-cen">
@@ -76,7 +77,7 @@
           <div class="clearfix pt5 pb5 disflex operation-box">
             <FormId>
               <div
-                class="shadow_gray textc bradius5 pt15 pl15 pr15 h65 mr10 business_card"
+                class="shadow_gray textc bradius5 pt15 pl15 pr15 h50 mr10 business_card"
                 @click="createCode"
               >
                 <p class="pb3">名片码</p>
@@ -98,27 +99,27 @@
               >
                 <div class="disflex">
                   <div
-                    class="shadow_gray textc pt15 pl15 pr15 h65 mr10"
+                    class="shadow_gray1 textc pl15 mt5 ml10 pr15 h50 mr10"
                     v-if="type == 0"
                     @click="toShowBill"
                   >
-                    <p class="pb7">名片海报</p>
+                    <p class="pb7 pt5">名片海报</p>
                     <img
                       src="https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/crm/wx_timeline.png"
                       alt=" "
                       class="w20 h20"
                     />
                   </div>
-                  <div class="posre shadow_gray textc bradius5 pt15 pl15 pr15 h65 mr10">
+                  <div class="posre shadow_gray1 textc bradius5 mt5 pl15 pr15 h50 mr10">
                     <GetPhoneNumber @next="addToAddressBook">
-                      <p class="pb7">同步到</p>
+                      <p class="pb7 pt5">同步到</p>
                       <p>通讯录</p>
                     </GetPhoneNumber>
                     <LoginIntercept @loginSuccess="loginInterceptSuccess" class="login-intercept" />
                   </div>
-                  <div class="posre shadow_gray textc bradius5 pt15 pl15 pr15 h65 mr10">
+                  <div class="posre shadow_gray1 textc bradius5  pl15 mt5 pr15 h50 mr10">
                     <GetPhoneNumber @next="makePhone">
-                      <p class="disflex align-cen">
+                      <p class="disflex align-cen pt5">
                         <img
                           src="https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/user/tel.png"
                           alt
@@ -130,9 +131,9 @@
                     </GetPhoneNumber>
                     <LoginIntercept @loginSuccess="loginInterceptSuccess" class="login-intercept" />
                   </div>
-                  <div class="posre shadow_gray textc bradius5 pt15 pl15 pr15 h65 mr10">
+                  <div class="posre shadow_gray1 textc bradius5 pl15 mt5 pr15 h50 mr10">
                     <GetPhoneNumber @next="addWx">
-                      <p class="disflex align-cen">
+                      <p class="disflex align-cen pt5">
                         <img
                           src="https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/user/msg.png"
                           alt
@@ -144,9 +145,9 @@
                     </GetPhoneNumber>
                     <LoginIntercept @loginSuccess="loginInterceptSuccess" class="login-intercept" />
                   </div>
-                  <div class="posre shadow_gray textc bradius5 pt15 pl15 pr15 h65 mr10">
+                  <div class="posre shadow_gray1 textc bradius5 mt5 pl15 mr10 pr15 h50 mr10">
                     <GetPhoneNumber>
-                      <p class="disflex align-cen">
+                      <p class="disflex align-cen pt5">
                         <img
                           src="https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/product-index/20190425164542.png"
                           alt
@@ -198,7 +199,7 @@
         </div>
       </div>
       <!--introduce begin-->
-      <div class="bgf5f6 c38 fs16 pl15 pr15">
+      <div class="bgf5f6 c38 fs16 pl15 pr15 pb20">
         <p class="lh44 fs16 fbold">个人简介</p>
         <div class="shadow_gray pl15 pr15 bgfff bradius5">
           <div class="pt15 disflex pb20" v-if="audioArr.src">
@@ -241,8 +242,8 @@
             v-if="introduce"
           >
             <div
-              class="introduce pb20"
-              :style="{'padding-top': audioArr.src ? '0' : '40rpx'}"
+              class="introduce pb20 h70"
+              :style="{'padding-top': audioArr.src ? '0' : '40rpx','white-space':'pre-wrap'}"
             >{{introduce}}</div>
           </div>
           <div class="more fs12 ca8 lh40 textc" @click="seemore = !seemore" v-if="moreshow">了解更多</div>
@@ -268,7 +269,6 @@
               :src="videoItem.videoUrl"
               objectFit="cover"
               enable-danmu
-              danmu-btn
               controls
               :autoplay="true"
             ></video>
@@ -279,7 +279,7 @@
               v-else
             >
               <img
-                mode="aspectFill"
+                mode="aspectFit"
                 :src="videoItem.videoCover || 'https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com//one-www/photo/20190604/1559619324240.png'"
                 alt
                 :class="index === 0 ? 'w100p h194' : 'w168 h94'"
@@ -317,7 +317,10 @@
       </div>
       <!--pic end-->
       <!--bottom-->
-      <div class="textc lh42 fs12 ca8 bgf5f6">- 汉全科技集团出品 -</div>
+
+      <!--<div class="textc lh42 fs12 ca8 bgf5f6">猿销帮提供</div>-->
+        <Bottom></Bottom>
+
       <!--右边悬浮框-->
       <!-- <div class="index_float_right trans2 overhidden">
                 <RightFloat :isShow="isShow" @clickRightRowEvent="clickRightRowEvent"></RightFloat>
@@ -339,12 +342,14 @@
       @talk="talk"
       @loginInterceptSuccess="loginInterceptSuccess"
     ></FloatButtons>
+      <Tabbar></Tabbar>
   </div>
 </template>
 <script>
 let myaudio = wx.createInnerAudioContext();
 myaudio.obeyMuteSwitch = false;
-
+import websocket from "../../utils/websocket";
+import Tabbar from "@/components/Tabbar";
 import RightFloat from "@/components/rightFloat"; //
 import FloatButtons from "@/components/FloatButtons.vue";
 import GetPhoneNumber from "@/components/getPhoneNumber"; //
@@ -354,6 +359,8 @@ import Card_2 from "@/components/card_2"; //
 import Card_3 from "@/components/card_3"; //
 import Card_4 from "@/components/card_4"; //
 import Card_5 from "@/components/card_5"; //
+import Card_6 from "@/components/card_6"; //
+import Bottom from "@/components/Bottom";
 
 import FormId from "@/components/formId";
 import NavBarByUser from "@/components/NavBarByUser.vue";
@@ -363,6 +370,9 @@ import WXAJAX from "../../utils/request";
 import util from "../../utils/index";
 import HandleLogin from "@/utils/handleLogin";
 import LoginIntercept from "@/components/LoginIntercept";
+import { addShareRecord } from "@/utils/behavior";
+import {authSubscribeOrder} from '@/utils/auth'
+import store from "../../store/index";
 
 export default {
   data() {
@@ -370,7 +380,7 @@ export default {
       introduce: "", //介绍
       seemore: false,
       introHeight: "",
-
+        USERID:'',
       //音频列表
       audioArr: {
         id: "0",
@@ -379,6 +389,7 @@ export default {
         bl: false,
         startTime: 0
       },
+        startTime:0,
       card_type: 1, //名片样式
       type: 0, //0我的名片，1别人名片
       card_msg: {
@@ -391,6 +402,7 @@ export default {
         company: ""
       },
       COMPANYID: 0,
+        targetId:0,
       CARDID: 0,
       playIndex: "",
       moreShow: false,
@@ -408,23 +420,27 @@ export default {
       targetAvatarUrl: "", //当前目标的人物头像
       scrollContentHeight: 0, //中间滚动区域的高度
       mainHeight: 0, //整体高度
-      scrollLeft: 0
+      scrollLeft: 0,
+        time:0,//浏览时间段
     };
   },
 
   components: {
+      Tabbar,
     RightFloat,
     Card_1,
     Card_2,
     Card_3,
     Card_4,
     Card_5,
+      Card_6,
     FormId,
     GetPhoneNumber,
     AddWxCourse,
     NavBarByUser,
     FloatButtons,
-    LoginIntercept
+    LoginIntercept,
+      Bottom
   },
 
   onShareAppMessage(e) {
@@ -437,6 +453,13 @@ export default {
     } catch (e) {
       console.error("获取分享语出现错误");
     }
+
+      // this.addDynamicForwardRecord(this.CARDID, dynamicid);
+      let uuid = this.CARDID + "" + new Date().getTime();
+      addShareRecord(this.COMPANYID, 1,this.USERID, uuid).then(
+          res => {},
+          err => {}
+      );
 
     return {
       title:
@@ -473,12 +496,17 @@ export default {
       // 如果没有，则需要查询默认名片
       this.getAllCard();
     }
+      this.setTabberList(1);//更改底部栏
   },
   onShow() {
+      wx.hideTabBar();//隐藏官方tabbar
+      this.setTabberList();//更改底部栏
+
     //获取名片的公司
     let lastCardId = this.CARDID;
     this.COMPANYID = wx.getStorageSync("COMPANYID") || 0;
     this.CARDID = wx.getStorageSync("CARDID") || 0;
+      this.USERID = wx.getStorageSync("userId") || 0;
     this.hasCard = wx.getStorageSync("hasCard");
     this.avatarUrl = wx.getStorageSync("avatarUrl") || "";
     this.isLogin = HandleLogin.returnIsLogin() || false;
@@ -491,9 +519,18 @@ export default {
     } else {
       this.inits();
     }
+
+      //查询订阅消息
+      this.getSubscription();
+
+    //初始化时间
+      this.startTime = setInterval(()=>{this.time++;},1000);
+
   },
+    //离开页面
   onHide() {
     myaudio.stop();
+      this.setTimeOut();
   },
   async onPullDownRefresh() {
     // to doing..
@@ -509,7 +546,7 @@ export default {
     this.right_float_show = false;
   },
   computed: {
-    ...mapGetters(["currentCompany"])
+    ...mapGetters(["currentCompany","subscriptionNew"]),
   },
   async mounted() {
     let a = await util.systemIfo();
@@ -517,13 +554,50 @@ export default {
     this.scrollContentHeight = a.windowHeight - getApp().globalData.navHeight;
   },
   methods: {
-    ...mapActions(["setCurrentCompany"]),
+    ...mapActions(["setCurrentCompany",'setSubscriptionNew','setTabbar']),
+      setTabberList(type){//自定义底部栏
+          WXAJAX.POST(
+              {companyId: wx.getStorageSync("COMPANYID")}, "", "/companySysMenu/selectCompanySysMenuIs")
+              .then(data => {
+                  this.setTabbar(data);
+                  store.commit('setCurrentTab',5);
+                  if(type){
+                      store.commit('setCurrentTab',data[0].type);
+                      wx.switchTab({url:data[0].route});//改变首页跳转
+                  }
+              }).catch(err=>{
+              this.setTabbar(null);
+          })
+      },
+      getCurrentMsg(){//获取当前未读消息
+          websocket.sendMessage({
+              code: 109,
+              targetId: this.targetId
+          });
+      },
+      //查询订阅消息
+      getSubscription(){
+          //固定公司主体查询 解决订阅消息没有按小程序主体设计的bug
+          console.log(WXAJAX.smartMainId,'id');
+          WXAJAX.POST({companyId : WXAJAX.smartMainId},'','/subscription/getComanySub').then(data => {
+              console.log(data);
+              //存放到store
+              this.setSubscriptionNew(data);
+          });
+      },
+
+      //计算时长
+      setTimeOut(){
+          clearInterval(this.startTime);
+          let url = "/businessCard/cardDetails";
+          console.log(this.time);
+          WXAJAX.POST({cardId: this.CARDID, refresh: 1,timeQuantum:this.time}, "", url).then(()=>{
+              this.time = 0;
+          })
+      },
     getAllCard() {
-      WXAJAX.POST(
-        {
-          name: "",
-          pageNum: 1
-        },
+
+      WXAJAX.POST({name: "", pageNum: 1},
         "",
         "/businessCard/seeDetail",
         "1"
@@ -610,6 +684,9 @@ export default {
     },
     //聊一聊
     talk() {
+        //订阅授权 信息相关
+        authSubscribeOrder(this.subscriptionNew);
+
       wx.navigateTo({
         url:
           "../IM/main?userId=" +
@@ -700,14 +777,18 @@ export default {
               browseNum: data.browseNum || 0,
               thumbsNum: data.thumbsNum,
               address: data.address || "",
-              browsePhoto: data.browsePhoto ? data.browsePhoto.split(",") : []
+              browsePhoto: data.browsePhoto ? data.browsePhoto.split(",").slice(0,5) : []
             };
+
             this.introduce = data.briefIntroduction || "";
+              this.targetId = data.userId || "";
             this.self_photos = data.photo ? data.photo.split(",") : [];
             this.card_type = data.style + 1;
             this.type = data.cardType;
             this.isThumbs = data.isThumbs;
             wx.setStorageSync("CARDTEL", data.phone);
+            wx.setStorageSync("companyAddress", data.address);
+              this.getCurrentMsg();
 
             this.setCurrentCompany(data);
             if (this.currentCompany.userId === wx.getStorageSync("userId")) {
@@ -862,6 +943,27 @@ export default {
       );
     },
     updateMyCard() {
+        // console.log('sas');
+        // wx.chooseMessageFile({
+        //     count: 10,
+        //     type: 'file',
+        //     success (res) {
+        //         console.log(res);
+        //         // tempFilePath可以作为img标签的src属性显示图片
+        //         // const tempFilePaths = res.tempFiles
+        //     }
+        // })
+        // const fs = wx.getFileSystemManager();
+        // wx.getSavedFileList({
+        //     success: function(res) {
+        //         console.log(res);
+        //         // wx.getSavedFileInfo({
+        //         //     filePath: res.fileList[0].filePath,
+        //         //     success: function(res1){console.log(res1);}
+        //         // });
+        //     }
+        // });
+        // fs.writeFileSync(`${wx.env.USER_DATA_PATH}/hello.txt`, 'hello, world', 'utf8')
       if (!HandleLogin.returnIsLogin()) {
         this.loginGuide();
         return;
@@ -946,7 +1048,6 @@ export default {
         });
     }
   },
-  created() {}
 };
 </script>
 <style>
@@ -981,7 +1082,7 @@ export default {
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  border-radius: 0 50% 50% 0;
+  /*border-radius: 0 50% 50% 0;*/
   display: flex;
   align-items: center;
   padding-top: 0;
@@ -1006,15 +1107,23 @@ export default {
 
 .scroll-list {
   width: 567upx;
-  white-space: nowrap;
-  padding: 20upx 40upx 20upx 20upx;
+    height: 120upx;
+  white-space: pre;
+  padding: 20upx 40upx 20upx 0;
+}
+.shadow_gray1{
+    box-shadow: 0 0 20upx rgba(56, 56, 56, 0.05);
 }
 
 .scroll-list > div {
-  white-space: nowrap;
+  white-space: pre-line;
   box-sizing: border-box;
 }
-
+.introduce{
+    overflow: auto;
+    overflow-wrap: break-word;
+    text-align: justify;
+}
 .self_introduce {
   min-height: 214upx;
   transition: 0.1s;

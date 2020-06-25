@@ -10,6 +10,40 @@ import msgCont from './msgCont'
 import jsMsg from './jsMsg'
 import { stat } from 'fs';
 const state = {
+    initTabar: [
+        {
+            "name": "名片",
+            "iconPath": "../static/tabs/card.png",
+            "selectedIconPath": "../static/tabs/card_select.png",
+            'route':'../index/main'
+        },
+        {
+            "name": "预约",
+            "iconPath": "../static/tabs/appointment.png",
+            "selectedIconPath": "../static/tabs/appointment_select.png",
+            'route':'../appointment/main'
+        },
+        {
+            "name": "商城",
+            "iconPath": "../static/tabs/prod_gray.png",
+            "selectedIconPath": "../static/tabs/prod_select.png",
+            'route':'../Product/main'
+        },
+        {
+            "name": "动态",
+            "iconPath": "../static/tabs/browser.png",
+            "selectedIconPath": "../static/tabs/browser_select.png",
+            'route':'../Dynamic/main'
+        },
+        {
+            "name": "官网",
+            "iconPath": "../static/tabs/computer.png",
+            "selectedIconPath": "../static/tabs/computer_select.png",
+            'route':'../WebSite/main'
+        }
+    ],//默认底部栏
+    currentTab:0,//底部导航栏点击角标
+    tabList:wx.getStorageSync('tabList') || [],//底部栏
   currentCompany: wx.getStorageSync('CURRENT_COMPANY') || {},
   phone: wx.getStorageSync('phone') || '',
   unreadNum: 0, // 详情页面中的未读消息数量
@@ -22,7 +56,8 @@ const state = {
      phone: wx.getStorageSync('phone') || '',
      userId:  wx.getStorageSync('userId') || '',
      avatarUrl:  wx.getStorageSync('avatarUrl') || '',
-   }
+   },
+    subscriptionNew: [] //订阅消息
 };
 const mutations = {
   SET_CURRENT_COMPANY(state, data) {
@@ -36,6 +71,23 @@ const mutations = {
   SET_PHONE(state, data){
     state.phone = data;
   },
+    setCurrentTab(state,data){
+        state.tabList.forEach((item,index) =>{
+            if(Number(item.type) === Number(data)){
+                //console.log(data,index);
+                state.currentTab = index;
+            }
+        })
+    },
+    SET_TABBAR(state,data){
+        if (data) {
+            state.tabList = data;
+            wx.setStorageSync('tabList', JSON.stringify(data));
+        }else{
+            let temp = wx.getStorageSync('tabList')?JSON.parse(wx.getStorageSync('tabList')) : state.initTabar;
+            state.tabList = temp
+        }
+    },
   SET_UNREAD_NUM(state, data){
     state.unreadNum = data;
   },
@@ -47,7 +99,10 @@ const mutations = {
   },
   setPhone(state, phone) {
     state.phone = phone;
-  }
+  },
+    SET_SUBSCRIPTION_NEW(state,subscriptionNew){
+        state.subscriptionNew = subscriptionNew;
+    }
 };
 
 const actions = {
@@ -60,6 +115,12 @@ const actions = {
   setUnreadNum({commit}, data){
     commit('SET_UNREAD_NUM', data);
   },
+    setSubscriptionNew({commit}, data) {
+        commit('SET_SUBSCRIPTION_NEW', data);
+    },
+    setTabbar({commit}, data){
+        commit('SET_TABBAR', data);
+    },
 };
 
 export default new Vuex.Store({
@@ -80,6 +141,11 @@ export default new Vuex.Store({
     unreadNum: state => state.unreadNum,
     countNum: state => state.msgCont.countNum,
     currentNum: state => state.msgCont.currentNum,
+      subscriptionNew: state => state.subscriptionNew,
+      currentTab: state => state.currentTab,
+      tabList: state => state.tabList,
+      // currentUserId:state => state.msgCont.currentUserId,
+      // currentSum:state => state.msgCont.currentSum
   },
   /* plugins: [
        createPersistedState({

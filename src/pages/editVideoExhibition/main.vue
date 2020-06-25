@@ -34,7 +34,6 @@
             objectFit="cover"
             :poster="videoItem.cover"
             enable-danmu
-            danmu-btn
             controls
             :autoplay="true"
           ></video>
@@ -102,6 +101,7 @@ export default {
       dialog_value: "",
       chooseTypeShow: false,
       uploadVideoType: 0,
+        formData:{},
       uploadVideoTypes: [
         { name: "添加链接", id: 1 },
         { name: "本地视频", id: 2 }
@@ -125,6 +125,10 @@ export default {
       this.videoItem.cover = videoItem.videoCover;
       this.videoItem.videoId = videoItem.videoId;
     }
+
+      let userId = wx.getStorageSync("userId") || "";
+
+      this.formData = {userId, accountType:1};//过滤内容添加字段
   },
   onUnload() {
     wx.removeStorage({ key: "editVideoExhibition" });
@@ -137,13 +141,19 @@ export default {
         count: 1,
         sourceType: ["album", "camera"],
         success: res => {
-          WXAJAX.UploadImage(res.tempFilePaths[0])
+          WXAJAX.UploadImage(res.tempFilePaths[0],this.formData)
             .then(data => {
               wx.hideLoading();
               data = JSON.parse(data);
               if (data.code == 200) {
                 let cover = WXAJAX.imgBackUrl + data.data + ".primary.png";
                 this.videoItem.cover = cover;
+              }else if(data.code == "201"){
+                  wx.showToast({
+                      title: data.message,
+                      duration: 2000,
+                      icon: "none"
+                  });
               }
             })
             .catch(err => {
@@ -176,13 +186,19 @@ export default {
               title: "上传中…",
               mask: true
             });
-            WXAJAX.UploadImage(res.tempFilePath)
+            WXAJAX.UploadImage(res.tempFilePath,this.formData)
               .then(data => {
                 wx.hideLoading();
                 data = JSON.parse(data);
                 if (data.code == 200) {
                   let url = WXAJAX.imgBackUrl + data.data;
                   this.videoItem.url = url;
+                }else if(data.code == "201"){
+                    wx.showToast({
+                        title: data.message,
+                        duration: 2000,
+                        icon: "none"
+                    });
                 }
               })
               .catch(err => {

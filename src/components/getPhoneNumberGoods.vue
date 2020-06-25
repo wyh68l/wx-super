@@ -22,17 +22,21 @@
             class="isAssemble"
           />
           <p class="fs14 lh15 minh30 c38 over_2 pl16 pr22 pt7 mb7 goods-name">{{goodInfo.goodsName}}</p>
-          <p class="fs12 pl16">
+
+          <p class="fs12 pl16" v-if="!goodInfo.title">
             <span class="corange pr7">
               <b class="disinblock">￥</b>
               <b class="fs20 fbold disinblock">{{goodInfo.price}}</b>
             </span>
             <!--<span class="ca8 line-through">￥198</span>-->
           </p>
+            <p v-else class="fs15 pl16 corange">{{goodInfo.title}}</p>
+
         </div>
         <ProductCard
           v-else
           :imgUrl="goodInfo.prodLogo"
+          :title2="goodInfo.title"
           :title="goodInfo.productsName"
           :desc="goodInfo.describe"
           :typeName="goodInfo.productsTypeName"

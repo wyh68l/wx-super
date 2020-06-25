@@ -169,6 +169,7 @@ export default {
     },
     //提交订单，
     submitOrder(payload) {
+        this.currentSelectPro.killId = this.proData.killId;
       this.currentSelectPro = JSON.parse(JSON.stringify(this.currentSelectPro));
       this.currentSelectPro.goodsName = this.proData.goodsName;
       this.currentSelectPro.num = payload.sum;
@@ -181,6 +182,7 @@ export default {
       ).toFixed(2);
       this.currentSelectPro.isKill = this.proData.isKill;
       this.currentSelectPro.killEndTime = this.proData.killEndTime;
+
 
       this.currentSelectPro.allPrice =
         this.currentSelectPro.price * this.currentSelectPro.num;

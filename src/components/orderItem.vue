@@ -72,23 +72,23 @@
             <div class="disflex mt5" v-if="iscart">
               <span
                 class="be8 pl7 pr8 lh20 fs12 ca8 mr8 bradius3"
-              >{{prod_item.specName || ''}}；{{prod_item.specAttribute}}</span>
+              >{{specName}}；{{prod_item.specAttribute}}</span>
             </div>
             <div class="mt8" v-else>
               <span
                 class="pl7 pr8 lh20 fs12 ca8 mr8"
-              >{{prod_item.specName || ''}}；{{prod_item.specAttribute}} x {{prod_item.num}}</span>
+              >{{specName}}；{{prod_item.specAttribute}} x {{prod_item.num}}</span>
               <div>
                 <span
                   class="pl7 pr8 lh20 fs12 ca8 mr8"
-                >￥{{prod_item.isKill ? prod_item.killPrice : prod_item.price}}</span>
+                >￥{{prod_item.isKill ? (prod_item.killPrice)/100 : prod_item.price}}</span>
               </div>
             </div>
             <!--加减-->
             <div class="disflex jsbet align-cen" v-if="iscart" @click.stop="''">
               <span class="cdeeporange fs14">
                 <span>￥</span>
-                <span>{{prod_item.isKill ? prod_item.killPrice : prod_item.price}}</span>
+                <span>{{prod_item.isKill ? (prod_item.killPrice)/100 : prod_item.price}}</span>
               </span>
               <div class="counter disflex number-change-btn-group">
                 <span class="textc be8 lh25 w25 minus ca8" @click.stop="prodChangeNum(index1,k,-1)">
@@ -116,6 +116,7 @@
 </template>
 <script>
 import SeckillCuntdown from "@/components/SeckillCuntdown"; // 订单项
+import store from "../store/index";
 
 export default {
   name: "",
@@ -132,11 +133,12 @@ export default {
   ],
   data() {
     return {
-      company_check: false
+      company_check: false,
+        specName:wx.getStorageSync('specName') || ''
     };
   },
   mounted() {
-    // console.log('orderData----',this.orderData)
+     console.log('orderData----',this.orderData)
   },
   methods: {
     prodChangeNum(index1, index2, num) {
@@ -162,8 +164,9 @@ export default {
       } else {
         wx.setStorageSync("CARDID", this.orderData.ordersModelList[0].cardId);
       }
-
+        store.commit('setCurrentTab',3);
       wx.switchTab({ url: "../Product/main" });
+
     }
   },
   watch: {}

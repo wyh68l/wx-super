@@ -86,6 +86,7 @@ import WXAJAX from "@/utils/request";
 import CountDown from "@/components/CountDown";
 import LoginIntercept from "@/components/LoginIntercept";
 import { addShareRecord } from "@/utils/behavior";
+import store from "../../store/index";
 
 export default {
   name: "",
@@ -96,7 +97,7 @@ export default {
       orderInfo: {},
       //拼团id
       assembleId: "",
-      msg: "发起了拼团，邀你一起来参与",
+      msg: "发起了拼团，邀您一起来参与",
       assembleInfo: {},
       cutTime: 0,
       progress: 0,
@@ -160,7 +161,7 @@ export default {
           }
           //如果不是分享进入的,则欢迎语根据数据来设置
           this.dxAssembleMsg();
-          //如果是分享进入的, 则写死为  发起了拼团，邀你一起来参与
+          //如果是分享进入的, 则写死为  发起了拼团，邀您一起来参与
         })
         .catch(err => {
           console.log("err", err);
@@ -179,6 +180,7 @@ export default {
     },
     //更多拼团 回到商城页
     moreCollage() {
+        store.commit('setCurrentTab',3);
       wx.switchTab({ url: "../Product/main" });
     }
   },

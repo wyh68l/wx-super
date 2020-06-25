@@ -18,7 +18,6 @@
           objectFit="cover"
           :src="videoItem.videoUrl"
           enable-danmu
-          danmu-btn
           controls
           :autoplay="true"
         ></video>
@@ -170,6 +169,7 @@ export default {
         temp.push(item.sort);
       });
       wx.showLoading();
+        console.log(temp);
       WXAJAX.POST(
         { videoId: videoItem.videoId, sorts: temp },
         "",
@@ -184,6 +184,7 @@ export default {
             icon: "none"
           });
           this.videoLists = videoTemp;
+          console.log(this.videoLists);
         })
         .catch(err => {
           wx.hideLoading();

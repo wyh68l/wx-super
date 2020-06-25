@@ -152,6 +152,7 @@ import util from "../../utils/index";
 import HandleLogin from "@/utils/handleLogin";
 import InsertCard from "./components/InsertCard.vue";
 import { addShareRecord } from "@/utils/behavior";
+import store from "../../store/index";
 export default {
   name: "",
   components: {
@@ -357,6 +358,7 @@ export default {
       wx.navigateTo({ url: "../" + url + "/main" });
     },
     toIndex(url, companyid, cardid) {
+        store.commit('setCurrentTab',5);
       //进入首页
       wx.setStorageSync("COMPANYID", companyid); /*id*/
       wx.setStorageSync("CARDID", cardid); /*id*/

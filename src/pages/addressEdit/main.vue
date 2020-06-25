@@ -5,8 +5,8 @@
 
       <p class="fs12 ca8">收货人信息</p>
 
-      <input type="text" class="pt15 w100p phe8" placeholder="收货人姓名" v-model="name">
-      <input type="text" class="pt15 w100p phe8" placeholder="收货人手机号" v-model="tel">
+      <input type="text" class="pt15 w100p phe8" placeholder="收货人姓名" pattern="\w*" v-model="name">
+      <input type="number" class="pt15 w100p phe8" placeholder="收货人手机号" v-model="tel" maxlength="11">
 
     </div>
 
@@ -130,6 +130,18 @@
       addAddr() {//添加地址
         let v = this;
 
+          let regRule = /\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g;
+          console.log(v.name.match(regRule));
+          if(v.name.match(regRule)) {
+              v.name = v.name.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, "");
+              wx.showToast({
+                  title: '请输入合法姓名',
+                  icon: 'none',
+                  duration: 2000
+              });
+              return
+          }
+
         if (!v.name) {
           wx.showToast({
             title: '请填写收货人姓名',
@@ -164,6 +176,7 @@
 
         }, '', '/personal/addAddress').then((data) => {
           wx.hideLoading();
+          console.log(data);
           if (data) {
             wx.showToast({
               title: '添加成功',
@@ -192,6 +205,18 @@
       },
       editAddr() {//编辑地址
         let v = this;
+
+          let regRule = /\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g;
+          console.log(v.name.match(regRule));
+          if(v.name.match(regRule)) {
+              v.name = v.name.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, "");
+              wx.showToast({
+                  title: '请填写正确格式收货人姓名，不能填写特殊字符或表情包',
+                  icon: 'none',
+                  duration: 2000
+              });
+              return
+          }
 
         if (!v.name) {
           wx.showToast({

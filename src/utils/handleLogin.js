@@ -92,7 +92,8 @@ export function getUserInfo(code, callback) {
           iv: msg.iv,
           phoneData: "",
           phoneIv: "",
-          touristsUserId: wx.getStorageSync("userId") // 当前游客登录人的userId
+          touristsUserId: wx.getStorageSync("userId"), // 当前游客登录人的userId
+            entryType:wx.getStorageSync("environment"),//运行环境
         },
         callback
       );
@@ -124,7 +125,8 @@ export function getUserInfoByPromise(code) {
           iv: msg.iv,
           phoneData: "",
           phoneIv: "",
-          touristsUserId: wx.getStorageSync("userId") // 当前游客登录人的userId
+          touristsUserId: wx.getStorageSync("userId"), // 当前游客登录人的userId
+            entryType:wx.getStorageSync("environment"),//运行环境
         });
         resolve(data);
       },
@@ -152,6 +154,7 @@ export function getUserInfoByPromise(code) {
  * @param callback 回调函数
  */
 export function postLogin(params, callback) {
+    console.log(params);
   WXAJAX.POST(params, "", "/home/wxLogin")
     .then(data => {
       if (data.token) {

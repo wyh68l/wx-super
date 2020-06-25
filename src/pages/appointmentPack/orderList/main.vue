@@ -22,7 +22,8 @@
           @cancelOrder="showTips(cart_item, 'cancel')"
         ></OrderItem>
         <!--bottom-->
-        <div class="textc lh42 fs12 ca8 bgf5f6" v-if="nodata">- 汉全科技集团出品 -</div>
+        <!--<div class="textc lh42 fs12 ca8 bgf5f6" v-if="nodata">- 汉全科技集团出品 -</div>-->
+          <Bottom v-if="nodata"></Bottom>
       </template>
       <div v-else>
         <NoData>暂无订单</NoData>
@@ -57,10 +58,12 @@ import WXAJAX from "@/utils/request";
 import DialogBox from "@/components/dialogBox"; // 对话框
 import OrderItem from "./components/OrderItem";
 import NoData from "@/components/noData";
+import Bottom from "@/components/Bottom";
+import store from "../../../store/index";
 
 export default {
   name: "",
-  components: { NoData, DialogBox, OrderItem },
+  components: { NoData, DialogBox, OrderItem,Bottom},
   data() {
     return {
       menus: [
@@ -171,7 +174,7 @@ export default {
     toAppointMentPage(orderInfo) {
       wx.setStorageSync("COMPANYID", orderInfo.companyId);
       wx.setStorageSync("CARDID", orderInfo.companyUserId);
-
+        store.commit('setCurrentTab',4);
       wx.switchTab({ url: `/pages/appointment/main` });
     },
     inits() {

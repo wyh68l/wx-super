@@ -16,6 +16,9 @@
       <div v-show="card_style == 4">
         <Card_5 :card_msg="card_msg"></Card_5>
       </div>
+        <div v-show="card_style == 5">
+            <Card_6 :card_msg="card_msg"></Card_6>
+        </div>
     </div>
     <!--名片样式-->
     <div class="bgfff pl16 pb10 pt15 mb10">
@@ -36,26 +39,33 @@
           @click="card_style_change(1)"
         />
         <img
-          src="https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/user/card_3.png"
+          src="https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/user/20200402card02.png"
           alt
           class="w50 h50 mr10 bradius5 borderbox"
           :class="card_style == 2 ? 'bblue' : 'bfff' "
           @click="card_style_change(2)"
         />
         <img
-          src="https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/user/card_4.png"
+          src="https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/user/20200402card03.png"
           alt
           class="w50 h50 mr10 bradius5 borderbox"
           :class="card_style == 3 ? 'bblue' : 'bfff' "
           @click="card_style_change(3)"
         />
         <img
-          src="https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/user/card_5.png"
+          src="https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/user/20200402card01.png"
           alt
           class="w50 h50 mr10 bradius5 borderbox"
           :class="card_style == 4 ? 'bblue' : 'bfff' "
           @click="card_style_change(4)"
         />
+          <img
+              src="https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/user/20200402card04.png"
+              alt
+              class="w50 h50 mr10 bradius5 borderbox"
+              :class="card_style == 5 ? 'bblue' : 'bfff' "
+              @click="card_style_change(5)"
+          />
       </div>
     </div>
     <div class="bgfff pl16 pr17 lh49 fs16 c38 mb11">
@@ -221,13 +231,14 @@
           name
           id
           v-model="intro"
+          maxlength=300
           v-if="showTextarea"
           :focus="showTextarea"
           @blur="showTextarea=false"
           class="bgf5f6 pl16 pr16 pt15 pb15 be8 bradius5 fs16 pha8 h119 borderbox w100p"
           placeholder="文字简介(300字以内)"
         ></textarea>
-        <div class="textarea" @click="showTextarea=true" v-else>{{intro || "文字简介(300字以内)"}}</div>
+        <div class="textarea h119" style="white-space:pre-line;overflow-wrap: break-word;" @click="showTextarea=true" v-else>{{intro || "文字简介(300字以内)"}}</div>
       </div>
     </div>
     <!--视频展示-->
@@ -302,6 +313,7 @@ import Card_2 from "@/components/card_2"; //
 import Card_3 from "@/components/card_3"; //
 import Card_4 from "@/components/card_4"; //
 import Card_5 from "@/components/card_5"; //
+import Card_6 from "@/components/card_6"; //
 import WXAJAX from "../../utils/request";
 
 let myaudio = wx.createInnerAudioContext();
@@ -320,7 +332,7 @@ const version = wx.getSystemInfoSync().SDKVersion;
    }*/
 export default {
   name: "",
-  components: { BottomButtonSmall, Card_1, Card_2, Card_3, Card_4, Card_5 },
+  components: { BottomButtonSmall, Card_1, Card_2, Card_3, Card_4, Card_5,Card_6 },
   data() {
     return {
       //音频列表
@@ -354,7 +366,8 @@ export default {
       showTextarea: false,
       selfCompany: {},
       isLoading: false,
-      self_video: []
+      self_video: [],
+        formData:{}
     };
   },
   watch: {
@@ -395,7 +408,12 @@ export default {
 
     let company = wx.getStorageSync("choose_company") || "",
       company_id = wx.getStorageSync("choose_company_id") || "",
+        userId = wx.getStorageSync("userId") || "",
       company_logo = wx.getStorageSync("choose_company_logo") || "";
+
+
+      this.formData = {userId, accountType:1};//过滤内容添加字段
+
     this.$set(this.card_msg, "company", company);
     this.$set(this.card_msg, "companyId", company_id);
     this.$set(this.card_msg, "company_logo", company_logo);
@@ -588,13 +606,14 @@ export default {
         // 录音失败的回调处理
       });
       recorderManager.onStop(function(res) {
+
         if (!that.now_get_auth) {
           that.now_get_auth = true;
           return;
         }
 
         //上传录音
-        WXAJAX.UploadImage(res.tempFilePath)
+        WXAJAX.UploadImage(res.tempFilePath,this.formData)
           .then(data => {
             wx.hideLoading();
             data = JSON.parse(data);
@@ -673,16 +692,23 @@ export default {
     uploadImg(path, str) {
       let v = this;
       wx.showLoading({ mask: true });
-      return WXAJAX.UploadImage(path)
+      return WXAJAX.UploadImage(path,this.formData)
         .then(data => {
           wx.hideLoading();
           data = JSON.parse(data);
+          console.log(data);
           if (data.code == "200") {
             if (str == "user") {
               v.$set(v.card_msg, "picchecked", WXAJAX.imgBackUrl + data.data);
             } else if (str == "self") {
               this.self_photos.push(`${WXAJAX.imgBackUrl}${data.data}`);
             }
+          }else if(data.code == "201"){
+              wx.showToast({
+                  title: data.message,
+                  duration: 2000,
+                  icon: "none"
+              });
           } else {
             wx.showToast({
               title: "网络异常",
@@ -741,9 +767,9 @@ export default {
 
       this.isLoading = true;
       wx.showLoading();
-      WXAJAX.POST(
-        {
-          style: v.card_style,
+
+
+      let temp = {style: v.card_style,
           companyId: companyId,
           name: v.card_msg.username,
           phone: v.card_msg.tel,
@@ -757,10 +783,12 @@ export default {
           email: v.card_msg.email,
           briefIntroduction: v.intro, //个人简介
           cardId: v.cardId
-        },
-        "",
-        _url
-      )
+      }
+
+      Object.assign(this.formData,temp);//添加文本过滤
+        // console.log(this.formData);
+
+      WXAJAX.POST(this.formData, "", _url)
         .then(data => {
           wx.hideLoading();
           this.isLoading = false;
@@ -834,6 +862,7 @@ export default {
 <style>
 .textarea {
   width: 100%;
+    overflow: auto;
   box-sizing: border-box;
   padding: 30upx 32upx;
   min-height: 238upx;
@@ -924,62 +953,62 @@ export default {
   }
 }
 
-.edit_card_top.fade {
-  animation: fade-in;
-  animation-duration: 0.5s;
-  /*-webkit-animation:fade-in 1.5s;*/
-}
+/*.edit_card_top.fade {*/
+  /*animation: fade-in;*/
+  /*animation-duration: 0.5s;*/
+  /*!*-webkit-animation:fade-in 1.5s;*!*/
+/*}*/
 
-.card2 .card_bg {
-  width: 452upx;
-  height: 100%;
-}
+/*.card2 .card_bg {*/
+  /*width: 452upx;*/
+  /*height: 100%;*/
+/*}*/
 
-.card2 .card2_inner {
-  position: absolute;
-  left: 324upx;
-  top: 104upx;
-}
+/*.card2 .card2_inner {*/
+  /*position: absolute;*/
+  /*left: 324upx;*/
+  /*top: 104upx;*/
+/*}*/
 
-.card_line_2 {
-  position: relative;
-}
+/*.card_line_2 {*/
+  /*position: relative;*/
+/*}*/
 
-.card_line_2::before,
-.card_line_2::after {
-  position: absolute;
-  width: 6upx;
-  height: 16upx;
-  background: #fff;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  content: "";
-}
+/*.card_line_2::before,*/
+/*.card_line_2::after {*/
+  /*position: absolute;*/
+  /*width: 6upx;*/
+  /*height: 16upx;*/
+  /*background: #fff;*/
+  /*top: 0;*/
+  /*bottom: 0;*/
+  /*margin: auto;*/
+  /*content: "";*/
+/*}*/
 
-.card_line_2::before {
-  right: 0;
-}
+/*.card_line_2::before {*/
+  /*right: 0;*/
+/*}*/
 
-.card_line_2::after {
-  right: 10upx;
-}
+/*.card_line_2::after {*/
+  /*right: 10upx;*/
+/*}*/
 
-.card_company {
-  position: absolute;
-  right: 34upx;
-  bottom: 30upx;
-}
+/*.card_company {*/
+  /*position: absolute;*/
+  /*right: 34upx;*/
+  /*bottom: 30upx;*/
+/*}*/
 
-.card3 .cacrd3_left {
-  position: absolute;
-  left: 106upx;
-  top: 96upx;
-}
+/*.card3 .cacrd3_left {*/
+  /*position: absolute;*/
+  /*left: 106upx;*/
+  /*top: 96upx;*/
+/*}*/
 
-.card3 .card3_right {
-  position: absolute;
-  left: 414upx;
-  top: 98upx;
-}
+/*.card3 .card3_right {*/
+  /*position: absolute;*/
+  /*left: 414upx;*/
+  /*top: 98upx;*/
+/*}*/
 </style>

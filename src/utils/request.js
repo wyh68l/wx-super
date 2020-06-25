@@ -10,9 +10,14 @@ let base64 = createBase64();
 
 let { companyKey, uploadUrl, baseUrl, ossUrl } = extJSON;
 var imgBackUrl = ossUrl;
+//baseUrl =  extJSON.baseUrl  ? extJSON.baseUrl : "https://api.sales77.com";
 
+console.log(baseUrl);
 baseUrl = baseUrl + "/userApi";
 uploadUrl = uploadUrl + "/file/uploadObjectOSS";
+//小程序主体id 兼容 oem配置禁止删除
+var smartMainId = extJSON.smartMainId  ? extJSON.smartMainId : 1;
+
 let token = "";
 let cacheRequestMap = new Map();
 let isRefreshToken = false;
@@ -74,18 +79,13 @@ async function requestUrl(request, method, service) {
         ) {
           resolve(data.data.data, data.data.code);
         } else if (data.data.code == 401) {
-            console.log('sasa');
           tempToken = null;
           clearLoginInfo();
           reject(data.data);
         } else {
           reject(data.data);
           let { message } = data.data;
-          message = message
-            ? message === "GENERAL"
-              ? "网络异常"
-              : message
-            : "网络异常";
+          message = message ? message === "GENERAL" ? "网络异常" : message : "网络异常";
           wx.showToast({
             title: message,
             duration: 2000,
@@ -253,7 +253,7 @@ export function DELETE(request, successed, service) {
   });
 }
 
-export function UploadImage(imgPath, method, service) {
+export function UploadImage(imgPath, formData,method, service) {
   return new Promise((resolve, reject) => {
     wx.uploadFile({
       url: uploadUrl,
@@ -262,6 +262,7 @@ export function UploadImage(imgPath, method, service) {
       //https://192.168.1.130/file/uploadObjectOSS
       filePath: imgPath,
       name: "file",
+        formData:formData,
       header: {
         "content-type": "multipart/form-data"
       },
@@ -748,5 +749,6 @@ export default {
   changeCollect,
   ToPay,
   ToIMPage,
-  ToMSGPage
+  ToMSGPage,
+    smartMainId
 };

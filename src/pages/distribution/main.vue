@@ -67,6 +67,8 @@ export default {
 
             this.totalMoney = (res.allMoney / 100).toFixed(2);
             this.total = res.total;
+              wx.hideLoading();
+              resolve();
           })
           .catch(() => {
             wx.hideLoading();

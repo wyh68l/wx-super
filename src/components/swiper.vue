@@ -10,12 +10,6 @@
 
           <!--<div class="w100p h100p bgbf"></div>-->
         </swiper-item>
-          <swiper-item>
-              <!-- scaleToFill  aspectFill-->
-              <image class="banner-img" :src="item"  mode="scaleToFill" @click="swipclick(index)"></image>
-
-              <!--<div class="w100p h100p bgbf"></div>-->
-          </swiper-item>
       </block>
     </swiper>
     <!--重置小圆点的样式  -->
@@ -54,9 +48,8 @@
     } ,
     data(){
       return{
-
         indicator: false, //是否显示指示点
-        interval: 5000,  //自动切换时间间隔
+        interval: 3000,  //自动切换时间间隔
         duration: 400,  //滑动动画时长
         autoplay: true, //是否自动切换
         circular: true, //是否采用衔接滑动
@@ -77,8 +70,10 @@
     methods:{
       //轮播图的切换事件
       swiperChange(e) {
-        this.cur = e.target.current  //获取当前轮播图片的下标, 可以给当前指示点加样式
-        this.$emit('swiperChange' , this.cur);
+          if (e.target.source === 'autoplay' || e.target.source === 'touch'){//解决卡顿问题
+              this.cur = e.target.current  //获取当前轮播图片的下标, 可以给当前指示点加样式
+              this.$emit('swiperChange' , this.cur);
+          }
       },
       swipclick(index) {
         this.$emit('swipclick' , index) ;

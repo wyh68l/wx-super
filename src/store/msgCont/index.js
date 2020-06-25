@@ -4,15 +4,19 @@ export default {
     status: 1,
     countNum: 0,
     currentNum: 0,
+      currentUserId:0,
+      currentSum:0
   },
   mutations:{
     GET_MSG_CONT(state,data){
       state.msgCont=data
-      console.log("state",state.msgCont);
+      //console.log("state",state.msgCont);
     },
     ADD(state, data) {
       if (!state.msgCont.data) state.msgCont.data = [];
       state.msgCont.data.push(data)
+        // state.currentUserId = data.companyId;
+        // state.currentSum++;
     },
     ADD_LIST(state, data){
       if (!state.msgCont.data) state.msgCont.data = [];

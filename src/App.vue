@@ -32,11 +32,11 @@ export default {
             duration: 2000,
             icon: 'none'
         });
-        setTimeout(function() {
-            let url = '/pages/wxLogin/main';
-            console.info('未登录跳转的地址：', url);
-            wx.redirectTo({ url: url });
-        }, 1000);
+        // setTimeout(function() {
+        //     let url = '/pages/wxLogin/main';
+        //     console.info('未登录跳转的地址：', url);
+        //     wx.redirectTo({ url: url });
+        // }, 1000);
     }
 
 

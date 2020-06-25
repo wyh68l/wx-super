@@ -13,7 +13,9 @@
         <span
           class="disblock posab top0 right5 bradius50p bg_line_orange w10 h10"
           v-if="msg.newestMessage.type== 0 && msg.newestMessage.sendId != myid"
-        ></span>
+        >
+
+        </span>
       </div>
       <div class="flex1">
         <div class="disflex jsbet">
@@ -82,7 +84,7 @@
             class="fs14 ca8 disinblock"
             style="font-size: 28upx"
             v-else-if="msg.newestMessage.messageType==2"
-          >我是{{msg.newestMessage.message.companyName}}的{{msg.newestMessage.message.name}},欢迎进入我的名片，有什么可以帮到你的吗？</span>
+          >我是{{msg.newestMessage.message.companyName}}的{{msg.newestMessage.message.name}},欢迎进入我的名片，有什么可以帮到您的吗？</span>
         </div>
       </div>
     </div>
@@ -145,6 +147,7 @@ export default {
     }
   },
   mounted() {
+      console.log(this.msg);
     this.myid = wx.getStorageSync("userId") || "";
   },
   methods: {

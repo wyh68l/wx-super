@@ -39,14 +39,18 @@
     <div class="disflex jsbet bgf5f6 pl15 pr16 wrap pb23" v-else>
       <getPhoneNumberGoods v-for="(v,k) in goodsList" :key="k" @next="toProdDetail" :goodInfo="v"></getPhoneNumberGoods>
     </div>
-    <div class="textc lh42 fs12 ca8 bgf5f6" v-if="nodata && goodsList.length > 0">- 汉全科技集团出品 -</div>
+    <!--<div class="textc lh42 fs12 ca8 bgf5f6" v-if="nodata && goodsList.length > 0">- 汉全科技集团出品 -</div>-->
+      <Bottom v-if="nodata && goodsList.length > 0"></Bottom>
+
   </div>
 </template>
 <script>
 import WXAJAX from "../../utils/request";
+import Bottom from "@/components/Bottom";
 import getPhoneNumberGoods from "@/components/getPhoneNumberGoods";
+
 export default {
-  components: { getPhoneNumberGoods },
+  components: { getPhoneNumberGoods,Bottom },
   data() {
     return {
       goodsList: [],

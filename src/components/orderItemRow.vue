@@ -46,6 +46,7 @@
 </template>
 
 <script>
+    import store from "../store/index";
 export default {
   name: "",
   props: ["orderData", "order_type"],
@@ -74,6 +75,7 @@ export default {
   methods: {
     toCompany() {
       //公司
+        store.commit('setCurrentTab',3);
       wx.switchTab({ url: "../Product/main" });
     },
     order_tap(orderIds) {

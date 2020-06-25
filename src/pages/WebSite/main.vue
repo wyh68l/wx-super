@@ -61,7 +61,6 @@
               :src="videoItem.url"
               objectFit="cover"
               enable-danmu
-              danmu-btn
               controls
               :autoplay="true"
             ></video>
@@ -170,6 +169,8 @@
 
       <!--bottom-->
       <div class="textc pb15 fs12 ca8 bgf5f6 pt15"></div>
+
+        <Bottom></Bottom>
     </scroll-view>
     <FloatButtons
       class="float-buttons"
@@ -178,23 +179,26 @@
       @talk="talk"
       @loginGuide="loginGuide"
     ></FloatButtons>
+      <Tabbar></Tabbar>
   </div>
 </template>
 
 <script>
 import SelfSwiper from "@/components/swiper"; //
+import Tabbar from "@/components/Tabbar"; //
 import WXAJAX from "../../utils/request";
 import amapFile from "../../libs/amap-wx.js";
 import util from "../../utils/index";
+import Bottom from "@/components/Bottom";
 
 import FloatButtons from "@/components/FloatButtons.vue";
 import NavBarByUser from "@/components/NavBarByUser.vue";
-import { mapState } from "vuex";
+import { mapState,mapGetters } from "vuex";
 import HandleLogin from "@/utils/handleLogin";
-
+import {authSubscribeOrder2} from '@/utils/auth'
 export default {
   name: "",
-  components: { SelfSwiper, NavBarByUser, FloatButtons },
+  components: { SelfSwiper, NavBarByUser, FloatButtons,Tabbar,Bottom },
   data() {
     return {
       img:
@@ -259,10 +263,16 @@ export default {
       targetAvatarUrl: "", //当前目标的人物头像,
       scrollContentHeight: 0, //中间滚动区域的高度
       mainHeight: 0, //整体高度
-      isLoading: false
+      isLoading: false,
+        startTime:0,
+        time:0,//浏览时间段
     };
   },
+    onHide(){
+        this.setTimeOut();
+    },
   onShow() {
+      wx.hideTabBar();//隐藏官方tabbar
     wx.setNavigationBarTitle({
       title: "官网"
     });
@@ -283,6 +293,9 @@ export default {
     this.avatarUrl = wx.getStorageSync("avatarUrl") || "";
     //获取官网招聘信息
     //this.getInvite();
+
+      //初始化时间
+      this.startTime = setInterval(()=>{this.time++;},1000);
   },
   async mounted() {
     let a = await util.systemIfo();
@@ -297,6 +310,15 @@ export default {
     wx.stopPullDownRefresh();
   },
   methods: {
+      //计算时长
+      setTimeOut(){
+          clearInterval(this.startTime);
+          let url = "/businessCard/cardDetails";
+          console.log(this.time);
+          WXAJAX.POST({seeType:3,timeQuantum:this.time}, "", url).then(()=>{
+              this.time = 0;
+          })
+      },
     //下拉刷新
     async scrolltoupper(e) {
       await this.inits();
@@ -313,6 +335,9 @@ export default {
     },
     //聊一聊
     talk() {
+        //订阅授权 订单相关
+        authSubscribeOrder2(this.subscriptionNew);
+
       wx.navigateTo({
         url:
           "../IM/main?userId=" +
@@ -520,7 +545,9 @@ export default {
   computed: {
     ...mapState({
       currentCompany: state => state.currentCompany
-    })
+    }),
+      ...mapGetters(["subscriptionNew"])
+
   },
   watch: {
     currentCompany: {

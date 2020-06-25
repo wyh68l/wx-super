@@ -228,12 +228,20 @@ export default {
       //订单支付
       WXAJAX.ToPay(
         {
-          ordersId: orderId
+          ordersId: orderId,
         },
         "/orders/goTwoPay"
       )
         .then(data => {
-          this.inits();
+            if(data.data.code == 201){
+                wx.showToast({
+                    title: data.data.message || "网络异常",
+                    duration: 2000,
+                    icon: "none"
+                });
+            } else{
+                this.inits();
+            }
         })
         .catch(err => {});
     },

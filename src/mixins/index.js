@@ -43,9 +43,10 @@ export default {
 
     },
     // 获取广告图片
-    getPlateAds(type){
+    getPlateAds(type,time){
       return WXAJAX.POST({
         type: type,
+          timeQuantum:time,
         companyId: wx.getStorageSync('COMPANYID')
       }, '', '/record/selectCompanyPhoto');
     },

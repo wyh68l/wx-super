@@ -122,7 +122,8 @@
       <!--    </div>-->
 
       <!--bottom-->
-      <div class="textc lh42 fs12 ca8 bgf5f6" v-if="nodata && prod_lists.length">- 汉全科技集团出品 -</div>
+      <!--<div class="textc lh42 fs12 ca8 bgf5f6" v-if="nodata && prod_lists.length">- 汉全科技集团出品 -</div>-->
+        <Bottom></Bottom>
 
       <!-- <div class="index_float_right trans2 overhidden">
         <RightFloat :isShow="isShow"  @clickRightRowEvent="clickRightRowEvent"></RightFloat>
@@ -140,10 +141,12 @@
       @talk="talk"
       @loginGuide="loginGuide"
     ></FloatButtons>
+      <Tabbar></Tabbar>
   </div>
 </template>
 
 <script>
+    import Tabbar from "@/components/Tabbar"; //
 import RightFloat from "@/components/rightFloat"; // 订单项
 import getPhoneNumberGoods from "@/components/getPhoneNumberGoods"; //
 import WXAJAX from "../../utils/request";
@@ -156,6 +159,7 @@ import NavBarByUser from "@/components/NavBarByUser.vue";
 import { mapState } from "vuex";
 import HandleLogin from "@/utils/handleLogin";
 import { addShareRecord } from "@/utils/behavior";
+import Bottom from "@/components/Bottom";
 
 export default {
   name: "",
@@ -166,7 +170,9 @@ export default {
     SelfSwiper,
     AuthenticationTag,
     FloatButtons,
-    NavBarByUser
+    NavBarByUser,
+      Bottom,
+      Tabbar
   },
   data() {
     return {
@@ -198,10 +204,16 @@ export default {
       isShowLoginGuide: true, //是否显示登录引导页,
       targetAvatarUrl: "", //当前目标的人物头像
       scrollContentHeight: 0, //中间滚动区域的高度
-      mainHeight: 0 //整体高度
+      mainHeight: 0 ,//整体高度
+        startTime:0,
+        time:0,//浏览时间段
     };
   },
+    onHide(){
+        this.setTimeOut();
+    },
   onShow() {
+      wx.hideTabBar();//隐藏官方tabbar
     //获取当前的公司
     let lastCompanyid = this.COMPANYID;
     this.COMPANYID = wx.getStorageSync("COMPANYID") || 0;
@@ -224,6 +236,9 @@ export default {
     //this.getMeuns();
     this.isLogin = HandleLogin.returnIsLogin() || false;
     this.avatarUrl = wx.getStorageSync("avatarUrl") || "";
+
+      //初始化时间
+      this.startTime = setInterval(()=>{this.time++;},1000);
   },
   computed: {
     ...mapState({
@@ -314,6 +329,13 @@ export default {
     this.scrollContentHeight = a.windowHeight - navHeight;
   },
   methods: {
+      //计算时长
+      setTimeOut(){
+          clearInterval(this.startTime);
+          let url = "/businessCard/cardDetails";
+          console.log(this.time);
+          WXAJAX.POST({seeType:5,timeQuantum:this.time}, "", url).then(()=>{this.time = 0;})
+      },
     //下拉刷新
     scrolltoupper(e) {
       this.page = 1;

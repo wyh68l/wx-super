@@ -93,7 +93,8 @@
           </div>
         </div>
         <!--bottom-->
-        <div class="textc lh42 fs12 ca8 bgf5f6" v-if="nodata">- 汉全科技集团出品 -</div>
+        <!--<div class="textc lh42 fs12 ca8 bgf5f6" v-if="nodata">- 汉全科技集团出品 -</div>-->
+          <Bottom v-if="nodata"></Bottom>
       </template>
       <div v-else>
         <NoData>暂无订单</NoData>
@@ -129,10 +130,11 @@ import OrderItemRow from "@/components/orderItemRow"; // 订单项
 import WXAJAX from "../../utils/request";
 import DialogBox from "@/components/dialogBox"; // 对话框
 import NoData from "@/components/noData";
+import Bottom from "@/components/Bottom";
 
 export default {
   name: "",
-  components: { OrderItem, OrderItemRow, NoData, DialogBox },
+  components: { OrderItem, OrderItemRow, NoData, DialogBox,Bottom},
   data() {
     return {
       order_type: 0,
@@ -310,9 +312,17 @@ export default {
         "/orders/goTwoPay"
       )
         .then(data => {
-          this.order_type = 2;
-          this.reset();
-          this.inits();
+            if(data.data.code == 201){
+                wx.showToast({
+                    title: data.data.message || "网络异常",
+                    duration: 2000,
+                    icon: "none"
+                });
+            }else{
+                this.order_type = 2;
+                this.reset();
+                this.inits();
+            }
         })
         .catch(err => {});
     },

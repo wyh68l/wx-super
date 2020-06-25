@@ -107,6 +107,7 @@ import GetPhoneNumber from "@/components/getPhoneNumber"; //
 import handleLogin from "@/utils/handleLogin";
 import WXAJAX from "@/utils/request";
 import { mapMutations } from "vuex";
+import store from "../store/index";
 export default {
   name: "BusinessCard",
   props: ["card_msg", "type", "hasCard", "isdel", "index", "isLogin"],
@@ -122,6 +123,7 @@ export default {
   methods: {
     ...mapMutations(["setPhone"]),
     page_turn(url) {
+        store.commit('setCurrentTab',5);
       // this.$emit('page_turn',url,this.card_msg.companyId , this.card_msg.cardId)
       wx.setStorageSync("COMPANYID", this.card_msg.companyId); /*id*/
       wx.setStorageSync("CARDID", this.card_msg.cardId); /*id*/

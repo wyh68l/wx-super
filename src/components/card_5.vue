@@ -11,40 +11,57 @@
       />
 
       <img
-        src="https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/user/card4_bg.png"
+        src="https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/user/20200402card08.png"
         alt
         class="posab right0 top0 card_bg"
       />
 
-      <div class="card2_inner nowrap">
+      <div class="card2_inner">
         <p class="fs18 fbold pb3" style="font-size:14px;">{{card_msg.username || '姓名'}}</p>
         <p class="fs10">{{card_msg.post || '职位'}}</p>
 
-        <div class="pl33 nowrap" style="position: absolute;top: 144upx;padding-left:0;color:#333;">
-          <p class="fs12 pb6 p-phone">{{card_msg.tel || '电话'}}</p>
-          <p class="fs12 p-phone">{{card_msg.email || '邮箱'}}</p>
-          <img
-            class="i-phone"
-            src="https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/user/dianhua001.png"
-            alt
-          />
-          <img
-            class="i-email"
-            src="https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/user/youxiang001.png"
-            alt
-          />
-          <img
-            class="i-address"
-            src="https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/user/dizhi001.png"
-            alt
-          />
+        <div class="pl33" style="position: relative;top: 90upx;padding-left:0;color:#333;">
+          <p class="fs12 pb7 p-phone">
+              {{card_msg.tel || '电话'}}
+              <img
+                      class="i-phone"
+                      src="https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/user/dianhua001.png"
+                      alt
+              />
+          </p>
+          <p class="fs12 pb7 p-phone">
+              {{card_msg.email || '邮箱'}}
+              <img
+                      class="i-email"
+                      src="https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/user/youxiang001.png"
+                      alt
+              />
+          </p>
+            <p class="fs12 p-phone">
+                {{companyAddress}}
+                <img
+                        class="i-address"
+                        src="https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/user/dizhi001.png"
+                        alt
+                />
+            </p>
         </div>
       </div>
 
       <div class="align-cen fs10 card_company disflex">
-        <span class="pr10" style="color:#333;">{{card_msg.company || '公司名称'}}</span>
         <div class="card_line_2"></div>
       </div>
+
+        <div class="disflex align-cen">
+            <img
+                    :src="card_msg.company_logo || card1_company"
+                    alt
+                    class="h60 company"
+                    mode="aspectFit"
+                    @click="previewImage(card_msg.company_logo || card1_company)"
+            />
+            <!--@click.stop="uploadpic('company')"-->
+        </div>
     </div>
   </div>
 </template>
@@ -55,6 +72,7 @@ export default {
   props: ["card_msg", "isPrev"],
   data() {
     return {
+        companyAddress:wx.getStorageSync('companyAddress') || '地址',
       card2_logo:
         "https://hq-one-stand.oss-cn-shenzhen.aliyuncs.com/yimai_photos/user/card2_user.png"
     };
@@ -85,6 +103,13 @@ export default {
   height: 100%;
 }
 
+.company{
+    height: 72rpx;
+    position: absolute;
+    z-index: 2;
+    top: 3rpx;
+    left: 341rpx;
+}
 .card2 .card2_inner {
   position: absolute;
   left: 368upx;
@@ -96,28 +121,22 @@ export default {
   width: 260upx;
 }
 .card2_inner .i-phone {
+    transform: translate(0,5rpx);
   width: 24upx;
   height: 24upx;
-  z-index: 999;
-  top: 4upx;
-  position: absolute;
-  right: -40upx;
+    margin-left: 15rpx;
 }
 .card2_inner .i-email {
+    transform: translate(0,5rpx);
   width: 24upx;
   height: 24upx;
-  z-index: 999;
-  top: 50upx;
-  position: absolute;
-  right: -40upx;
+    margin-left: 15rpx;
 }
 .card2_inner .i-address {
+    transform: translate(0,5rpx);
   width: 24upx;
   height: 24upx;
-  z-index: 999;
-  bottom: -38upx;
-  position: absolute;
-  right: -40upx;
+    margin-left: 15rpx;
 }
 .card_line_2 {
   position: relative;
@@ -146,6 +165,6 @@ export default {
 .card_company {
   position: absolute;
   right: 42upx;
-  bottom: 65upx;
+  bottom: 69upx;
 }
 </style>

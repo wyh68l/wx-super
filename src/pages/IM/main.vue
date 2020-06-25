@@ -44,7 +44,7 @@
         <div class="textc" v-if="msgitem.messageType == 4">
           <div
             class="sys-message"
-          >{{seedName}} {{msgitem.sendId== myid ? '已收到你的联系方式' : '已向你发送了联系方式，尽快与他联系'}}</div>
+          >{{seedName}} {{msgitem.sendId== myid ? '已收到您的联系方式' : '已向您发送了联系方式，尽快与他联系'}}</div>
         </div>
         <template v-else>
           <!--right-->
@@ -120,9 +120,10 @@
                 class="im_right_msg pl15 pt14 pr18 bgfff bradius5 w250 be8 posre"
                 v-if="msgitem.messageType==2"
               >
-                <p
-                  class="fs14 c38"
-                >你好，我是{{msgitem.message.companyName}}的{{msgitem.message.name}}，欢迎进入我的名片，有什么可以帮到你的吗？</p>
+                <p class="fs14 c38">
+                    {{welcome}}
+                    <!--您好，我是{{msgitem.message.companyName}}的{{msgitem.message.name}}，欢迎进入我的名片，有什么可以帮到您的吗？-->
+                </p>
                 <p class="fs12 ca8 pt10 pb9">您还可以点击查看</p>
                 <div class="disflex jsbet fs12 c38 lh30 textc wrap">
                   <span class="be8 bgf5f6 borderbox w104 mb10" @click="page_turn('Product')">企业产品</span>
@@ -208,15 +209,13 @@
                 class="im_right_msg pl15 pt14 pr18 bgfff bradius5 w250 be8 posre"
                 v-if="msgitem.messageType==2"
               >
-                <p
-                  class="fs14 c38"
-                >你好，我是{{msgitem.message.companyName}}的{{msgitem.message.name}}，欢迎进入我的名片，有什么可以帮到你的吗？</p>
+                <p class="fs14 c38">{{welcome}}</p>
                 <p class="fs12 ca8 pt10 pb9">您还可以点击查看</p>
                 <div class="disflex jsbet fs12 c38 lh30 textc wrap">
-                  <span class="be8 bgf5f6 borderbox w104 mb10" @click="page_turn('Product')">企业产品</span>
-                  <span class="be8 bgf5f6 borderbox w104 mb10" @click="page_turn('index')">我的名片</span>
-                  <span class="be8 bgf5f6 borderbox w104 mb10" @click="page_turn('WebSite')">企业官网</span>
-                  <span class="be8 bgf5f6 borderbox w104 mb10" @click="page_turn('Dynamic')">企业动态</span>
+                  <span class="be8 bgf5f6 borderbox w104 mb10" @click="page_turn('Product',3)">企业产品</span>
+                  <span class="be8 bgf5f6 borderbox w104 mb10" @click="page_turn('index',5)">我的名片</span>
+                  <span class="be8 bgf5f6 borderbox w104 mb10" @click="page_turn('WebSite',1)">企业官网</span>
+                  <span class="be8 bgf5f6 borderbox w104 mb10" @click="page_turn('Dynamic',2)">企业动态</span>
                 </div>
 
                 <span class="triangle_border_left"></span>
@@ -288,6 +287,7 @@ export default {
       pageFixed: "",
       socket: null,
       messageCont: {},
+        welcome:'',
       logo: "",
       myid: "",
       userlogo: "",
@@ -305,17 +305,18 @@ export default {
       chatHeight: 0,
       isShow: false,
       titleLists: [
-        { title: "你好，请问有智能名片的产品相关介绍文档吗？" },
-        { title: "你好，请问智能名片都有什么套餐，价格是怎么样的？" },
-        { title: "你好，请问有智能名片的产品相关介绍文档吗？" },
-        { title: "你好，我想和贵公司合作，具体怎么操作呢？" }
+        { title: "您好，请问有智能名片的产品相关介绍文档吗？" },
+        { title: "您好，请问智能名片都有什么套餐，价格是怎么样的？" },
+        { title: "您好，请问有智能名片的产品相关介绍文档吗？" },
+        { title: "您好，我想和贵公司合作，具体怎么操作呢？" }
       ],
       isInput: true,
       isMore: false,
       urls: "",
       isPadding: "",
       phrases: false,
-      text: "按住 说话"
+      text: "按住 说话",
+        formData:{}
     };
   },
   onUnload() {
@@ -328,8 +329,15 @@ export default {
     this.myid = wx.getStorageSync("userId") || "";
     const res = wx.getSystemInfoSync();
     if (res.model.indexOf("iPhone X") !== -1) this.isPadding = "40rpx";
+
+      let userId = wx.getStorageSync("userId") || "";
+
+      this.formData = {userId, accountType:1};//过滤内容添加字段
+      this.getWelcomeMes();
   },
   onShow() {
+      console.log(this.msgCont,'aa');
+
     let v = this;
     this.isShow = true;
     const {
@@ -382,6 +390,15 @@ export default {
   methods: {
     ...mapActions(["add", "change"]),
     ...mapMutations(["setPhone"]),
+
+      //获取欢迎语
+      getWelcomeMes(){
+          WXAJAX.POST({card_id:this.params.cardId},"", "/businessCard/selectByPrimaryKey").then(res => {
+              this.welcome = res.welcomeSpeech;
+              this.welcome  = this.welcome?this.welcome.replace('#name#', this.seedName).replace('#company#', res.companyName):'';
+              console.log(this.welcome);
+          })
+      },
 
     // 更多按钮
     moreIconEvent() {
@@ -526,7 +543,7 @@ export default {
     // 上传语音、视频、图片
     uploadFiles(filePath, contentType) {
       if (contentType === 4) wx.showLoading({ title: "上传中", mask: true });
-      return WXAJAX.UploadImage(filePath)
+      return WXAJAX.UploadImage(filePath,this.formData)
         .then(res => {
           res = JSON.parse(res);
           wx.hideLoading();
@@ -538,6 +555,12 @@ export default {
               contentType,
               targetId: this.$root.$mp.query.userId
             });
+          }else if(data.code == "201"){
+              wx.showToast({
+                  title: data.message,
+                  duration: 2000,
+                  icon: "none"
+              });
           }
         })
         .catch(err => console.log(err));
@@ -565,10 +588,10 @@ export default {
               return { title: val.text };
             })
           : [
-              { title: "你好，请问有智能名片的产品相关介绍文档吗？" },
-              { title: "你好，请问智能名片都有什么套餐，价格是怎么样的？" },
-              { title: "你好，请问有智能名片的产品相关介绍文档吗？" },
-              { title: "你好，我想和贵公司合作，具体怎么操作呢？" }
+              { title: "您好，请问有智能名片的产品相关介绍文档吗？" },
+              { title: "您好，请问智能名片都有什么套餐，价格是怎么样的？" },
+              { title: "您好，请问有智能名片的产品相关介绍文档吗？" },
+              { title: "您好，我想和贵公司合作，具体怎么操作呢？" }
             ];
       });
     },
@@ -607,7 +630,6 @@ export default {
     },
     getTime() {
       let priceObj = {};
-
       if (this.msgCont.data) {
         let times = this.msgCont.data.map((res, idx) => {
           if (res.messageType == 3) priceObj[idx] = res.message.price / 100;
@@ -723,7 +745,8 @@ export default {
         phoneNumber: this.phone
       });
     },
-    page_turn(url, id) {
+    page_turn(url, index) {
+        store.commit('setCurrentTab',index);
       wx.switchTab({ url: "../" + url + "/main" });
     }
   },

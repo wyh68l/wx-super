@@ -170,9 +170,8 @@ export default {
         wx.showLoading();
         WXAJAX.POST(
           {
-            shopCartId: this.cart_lists[index1].shopcartModelList[index2]
-              .shopCartId,
-            num: old_num + num
+            shopCartId: this.cart_lists[index1].shopcartModelList[index2].shopCartId,
+            num: old_num + num,
           },
           "",
           "/orders/updShopcartNum"
@@ -354,6 +353,7 @@ export default {
       let _prods = [];
       let v = this;
       let companyInfo = {};
+        console.log(v.cart_lists);
       v.labels.forEach(function(item1, k1) {
         item1.prod.forEach(function(item2, k2) {
           if (item2) {
@@ -382,6 +382,7 @@ export default {
         });
         return;
       }
+
       companyInfo.shopcartModelList = [..._prods];
       companyInfo.allNum = _prods.length;
       companyInfo.orderPrice = _prods.reduce((a, b) => {

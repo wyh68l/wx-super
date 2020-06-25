@@ -151,6 +151,8 @@ export default {
             menuButtonBounding.right - menuButtonBounding.width - 20 + "px";
           // 特此说明: 由于动态提示图片的框框部分在原图中的比例为0.36，由此计算出同比例放大缩小的图片大小为一下数据
           this.loginImgHeight = navBarUserHeight / 0.36 + "px";
+            wx.setStorageSync('environment',res.environment?2:1);
+            console.log('平台',res.environment?2:1);
           getApp().globalData.navHeight = navHeight;
         },
         fail(err) {

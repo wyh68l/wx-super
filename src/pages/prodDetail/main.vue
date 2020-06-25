@@ -8,7 +8,7 @@
               </swiper-item>
           </div>
     </swiper>-->
-    <SelfSwiper :imgUrls="images" :self_class="'h375'"></SelfSwiper>
+    <SelfSwiper :imgUrls="images" :self_class="'h375'"  @swipclick="preview"></SelfSwiper>
     <!-- 拼团 -->
     <AssembleInfo
       ref="assembleInfo"
@@ -112,7 +112,8 @@
       <p class="lh43 textc fs14 ca8">- 宝贝详情 -</p>
       <div class="bgfff" v-html="goodsMsg.goodsDetails"></div>
     </div>
-    <p class="lh43 textc fs12 ca8">- 汉全科技集团出品 -</p>
+    <!--<p class="lh43 textc fs12 ca8">- 汉全科技集团出品 -</p>-->
+      <Bottom></Bottom>
     <!--bottom-->
     <!--右边悬浮框-->
     <div
@@ -262,7 +263,8 @@ import SpikeBox from "./components/SpikeBox";
 import LoginIntercept from "@/components/LoginIntercept";
 import { addShareRecord } from "@/utils/behavior";
 import LoginDialog from "@/components/login";
-
+import Bottom from "@/components/Bottom";
+import store from "../../store/index";
 export default {
   name: "",
   components: {
@@ -273,7 +275,8 @@ export default {
     SpikeBox,
     LoginIntercept,
     SeckillInfo,
-    LoginDialog
+    LoginDialog,
+      Bottom
   },
   data() {
     return {
@@ -402,7 +405,7 @@ export default {
     let url = this.goodsMsg.coverImg || "";
 
     let uuid = this.cardId + "" + new Date().getTime();
-    addShareRecord(this.currentCompany.companyId, 3, this.goodId, uuid).then(
+    addShareRecord(this.currentCompany.companyId, 2, this.goodId, uuid).then(
       res => {},
       err => {}
     );
@@ -467,6 +470,10 @@ export default {
     clickRightRowEvent() {
       this.isShow = !this.isShow;
     },
+      //预览图片
+      preview(idx) {
+          this.previewImages(this.images, this.images[idx]);
+      },
     // 关闭预览图片
     closePreviewImg() {
       this.isPreviewImg = false;
@@ -598,12 +605,14 @@ export default {
         .then(data => {
           if (data) {
             this.proData = data;
+            wx.setStorageSync('specName',this.proData.goodSpecModelList[0].specName);
             v.goodsMsg = {
               goodsDetails: data.goodsDetails || "",
               name: data.goodsName,
               // price: data.isKill ? (data.killPrice / 100) : (data.price / 100),
               price: data.price / 100,
-              coverImg: data.coverImg
+              coverImg: data.coverImg,
+                killId:data.killId
             };
             v.goodsMsg.price = v.goodsMsg.price.toFixed(2);
 
@@ -776,6 +785,7 @@ export default {
       wx.hideLoading();
     },
     toProductList() {
+        store.commit('setCurrentTab',3);
       wx.switchTab({ url: "/pages/Product/main" });
     },
     page_turn(url) {
@@ -802,6 +812,7 @@ export default {
       currentGoods.cardId = this.cardId;
       currentGoods.price = (currentGoods.price / 100).toFixed(2);
       currentGoods.allPrice = currentGoods.price * currentGoods.num;
+      currentGoods.killId = this.goodsMsg.killId;
 
       let tmpObj = {
         companyId: this.currentCompany.companyId,
@@ -865,6 +876,8 @@ export default {
       }
       console.log("type", this.typeId);
       let v = this;
+      let forwardId = v.goodId == v.forwardGoodsId ? v.forwardId : "";
+      wx.setStorageSync('forwardId',forwardId);
 
       wx.showLoading();
 
@@ -873,7 +886,7 @@ export default {
           goodsId: v.goodId,
           cardId: v.cardId,
           specId: v.typeId, //规格ID
-          forwardId: v.goodId == v.forwardGoodsId ? v.forwardId : "",
+          forwardId: forwardId,
           num: v.num
         },
         "",

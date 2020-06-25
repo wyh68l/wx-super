@@ -56,11 +56,12 @@
             ></DynamicItem>
             <LoginIntercept />
           </div>
-          <div class="textc lh42 fs12 ca8 bgf5f6" v-if="nodata">- 汉全科技集团出品 -</div>
+          <!--<div class="textc lh42 fs12 ca8 bgf5f6" v-if="nodata">- 汉全科技集团出品 -</div>-->
         </template>
         <div v-else>
           <NoData>暂无数据</NoData>
         </div>
+          <Bottom></Bottom>
 
         <!--lists end-->
       </div>
@@ -68,7 +69,7 @@
     </scroll-view>
 
     <!--评论输入框-->
-    <div class="fix_bottom bgfff edit_input trans2" :class="input_show ? '' : 'hide'">
+    <div class="fix_bottom bgfff edit_input trans2 reviews" :class="input_show ? '' : 'hide'">
       <!--:class="input_show ? '' : 'hide' "-->
       <div class="bgfff pt3 pb5 pl10 disflex jsbet pr11 borderbox align-cen">
         <input
@@ -100,23 +101,27 @@
       @talk.stop="talk"
       @loginGuide.stop="loginGuide"
     ></FloatButtons>
+      <Tabbar></Tabbar>
   </div>
 </template>
 
 <script>
+    import Tabbar from "@/components/Tabbar"; //
 import DynamicItem from "@/components/dynamicItem"; // 订单项
+import Bottom from "@/components/Bottom";
 import NavBarByUser from "@/components/NavBarByUser.vue";
 
 import NoData from "@/components/noData";
 import SelfSwiper from "@/components/swiper"; //
 
-import { mapState } from "vuex";
+import { mapState,mapGetters } from "vuex";
 import FloatButtons from "@/components/FloatButtons.vue";
 import HandleLogin from "@/utils/handleLogin";
 import LoginIntercept from "@/components/LoginIntercept";
 
 import WXAJAX from "../../utils/request";
 import util from "../../utils/index";
+import {authSubscribeMessage} from '@/utils/auth'
 import { addShareRecord } from "@/utils/behavior";
 
 let httpImg =
@@ -130,7 +135,9 @@ export default {
     SelfSwiper,
     NavBarByUser,
     FloatButtons,
-    LoginIntercept
+    LoginIntercept,
+      Bottom,
+      Tabbar
   },
   data() {
     return {
@@ -284,13 +291,17 @@ export default {
       isShowLoginGuide: true, //是否显示登录引导页,
       targetAvatarUrl: "", //当前目标的人物头像,
       scrollContentHeight: 0, //中间滚动区域的高度
-      mainHeight: 0 //整体高度
+      mainHeight: 0, //整体高度
+        startTime:0,
+        time:0,//浏览时间段
     };
   },
   onHide() {
+      this.setTimeOut();
     this.clearPage();
   },
   onShow() {
+      wx.hideTabBar();//隐藏官方tabbar
     let v = this;
     //获取当前的公司
     let lastCardId = v.CARDID;
@@ -305,6 +316,9 @@ export default {
     }
     this.isLogin = HandleLogin.returnIsLogin() || false;
     this.avatarUrl = wx.getStorageSync("avatarUrl") || "";
+
+      //初始化时间
+      this.startTime = setInterval(()=>{this.time++;},1000);
   },
   onPageScroll: function(e) {
     this.comment_focus = false;
@@ -318,6 +332,15 @@ export default {
     this.scrollContentHeight = a.windowHeight - navHeight;
   },
   methods: {
+      //计算时长
+      setTimeOut(){
+          clearInterval(this.startTime);
+          let url = "/businessCard/cardDetails";
+          console.log(this.time);
+          WXAJAX.POST({seeType:4,timeQuantum:this.time}, "", url).then(()=>{
+              this.time = 0;
+          })
+      },
     //下拉刷新
     scrolltoupper(e) {
       wx.showLoading({
@@ -344,6 +367,9 @@ export default {
     },
     //聊一聊
     talk() {
+        //订阅授权 信息相关
+        authSubscribeMessage(this.subscriptionNew);
+
       wx.navigateTo({
         url:
           "../IM/main?userId=" +
@@ -467,6 +493,8 @@ export default {
               i.photos = i.photos ? i.photos.split(",") : [];
               i.createTime = util.getdate(i.createTime, "dateTime");
               i.doThumbsName = i.doThumbsName ? i.doThumbsName.split(",") : [];
+                i.logo = i.logo ? i.logo.split(",") : [];
+                //i.logo.reverse();
               /*addTime = +new Date(i.createTime);
             diff = nowTime - addTime ;
             if( diff < 60*60*1000){
@@ -476,6 +504,7 @@ export default {
             }*/
             });
             v.dynamic_lists = [...v.dynamic_lists, ...data];
+           // console.log(v.dynamic_lists);
             v.page++;
             setTimeout(function() {
               v.isLoading = false;
@@ -624,12 +653,11 @@ export default {
         "/personal/doComment"
       ).then(res => {
         let comments = this.dynamic_lists[this.add_comments_index];
-        comments.commentModelList = comments.commentModelList
-          ? comments.commentModelList
-          : [];
+        comments.commentModelList = comments.commentModelList ? comments.commentModelList : [];
         if (
-          comments.commentModelList.length < 10 ||
-          comments.commentNum > comments.commentModelList.length
+          // comments.commentModelList.length < 10 ||
+          // comments.commentNum > comments.commentModelList.length
+            true
         ) {
           this.dynamic_lists[this.add_comments_index].commentModelList.push({
             text: this.comments,
@@ -647,6 +675,7 @@ export default {
       });
     },
     zan(index1, isThumbs, dynamicId) {
+        // console.log(this.dynamic_lists[index1]);
       //点赞
       let isLogin = HandleLogin.returnIsLogin();
       if (!isLogin) {
@@ -658,48 +687,50 @@ export default {
       }
 
       let v = this;
-      wx.showLoading();
-      WXAJAX.POST(
-        {
-          dynamicId: dynamicId,
-          cardId: wx.getStorageSync("CARDID")
-        },
-        "",
-        "/personal/doDynamicThumbs"
-      )
-        .then(data => {
-          wx.hideLoading();
-          if (data) {
-            //点赞
-            v.dynamic_lists[index1].doThumbsName.push(data); //添加人名
-            v.$set(v.dynamic_lists[index1], "isThumbs", 1);
-            v.$set(
-              v.dynamic_lists[index1],
-              "doThumbsNum",
-              ++v.dynamic_lists[index1].doThumbsNum
-            );
-          } else {
-            v.dynamic_lists[index1].doThumbsName.pop();
-            v.$set(v.dynamic_lists[index1], "isThumbs", 0);
-            v.$set(
-              v.dynamic_lists[index1],
-              "doThumbsNum",
-              --v.dynamic_lists[index1].doThumbsNum
-            );
-          }
-          let status = !v.dynamic_lists[index1].operate_show;
-          v.$set(v.dynamic_lists[index1], "operate_show", status);
-        })
-        .catch(err => {
-          console.log(err);
-          wx.hideLoading();
-        });
+        WXAJAX.POST(
+            {
+                dynamicId: dynamicId,
+                cardId: wx.getStorageSync("CARDID"),
+                logo:wx.getStorageSync('avatarUrl')
+            },
+            "",
+            "/personal/doDynamicThumbs"
+        )
+            .then(data => {
+                wx.hideLoading();
+                if (data) {
+                    //点赞
+                  //  console.log(v.dynamic_lists[index1]);
+                    v.dynamic_lists[index1].logo.push(data); //添加头像
+                    v.$set(v.dynamic_lists[index1], "isThumbs", 1);
+                    v.$set(
+                        v.dynamic_lists[index1],
+                        "logo",
+                        v.dynamic_lists[index1].logo
+                    );
+                } else {
+                    v.dynamic_lists[index1].logo.pop();
+                    v.$set(v.dynamic_lists[index1], "isThumbs", 0);
+                    v.$set(
+                        v.dynamic_lists[index1],
+                        "logo",
+                        v.dynamic_lists[index1].logo
+                    );
+                }
+                let status = !v.dynamic_lists[index1].operate_show;
+                v.$set(v.dynamic_lists[index1], "operate_show", status);
+            })
+            .catch(err => {
+                console.log(err);
+                wx.hideLoading();
+            });
     }
   },
   computed: {
     ...mapState({
       currentCompany: state => state.currentCompany
-    })
+    }),
+      ...mapGetters(["subscriptionNew"])
   },
   watch: {
     currentCompany: {
@@ -773,8 +804,11 @@ export default {
 /* page{
     background: white;
   } */
-.edit_input.hide {
-  height: 0;
+.hide {
+  display: none;
+}
+.reviews{
+    bottom: 90rpx;
 }
 .dynamic {
   overflow: hidden;
