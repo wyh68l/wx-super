@@ -46,7 +46,7 @@
     "@types/html5plus": "latest",
     "@types/uni-app": "latest",
     "@vue/cli-plugin-babel": "3.5.1",
-    "@vue/cli-service": "^3.8.0",
+    "@vue/cli-service": "^5.0.8",
     "babel-plugin-import": "^1.11.0",
     "eslint": "^6.1.0",
     "eslint-plugin-vue": "^5.2.3",
